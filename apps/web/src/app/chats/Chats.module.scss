@@ -1,0 +1,2281 @@
+// Wszystkie kolory przez var(--*) z main-layout.scss
+// Motyw zmienia się przez data-theme="dark|light" na <html>
+
+.container {
+  width: 100%;
+  height: calc(100vh - 7.2rem);
+  display: flex;
+  overflow: hidden;
+  background-color: var(--bg-base);
+}
+
+// ── >FHD wrapper — centruje układ na ultra-szerokich ekranach ─────────────────
+
+.containerOuter {
+  width: 100%;
+  height: calc(100vh - 7.2rem);
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  background-color: var(--bg-base);
+  overflow: hidden;
+
+  > .container {
+    max-width: 1920px;
+    width: 100%;
+    height: calc(100vh - 7.2rem);
+  }
+}
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+
+.Contacts {
+  display: flex;
+  flex-direction: column;
+  width: 26rem;
+  min-width: 26rem;
+  height: 100%;
+  border-right: 0.1rem solid var(--border);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--bg-base);
+}
+
+.MyStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.2rem 1.4rem;
+  cursor: pointer;
+  border-bottom: 0.1rem solid var(--border);
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  user-select: none;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  &:hover {
+    background: var(--bg-surface);
+  }
+}
+
+.StatusChevron {
+  margin-left: auto;
+  opacity: 0.5;
+  font-size: 1rem;
+}
+.StatusLabel {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+.StatusMenu {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border-bottom: 0.1rem solid var(--border);
+  flex-shrink: 0;
+}
+
+.StatusMenuBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.4rem;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1.2rem;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+  &:hover {
+    background: var(--bg-elevated);
+  }
+}
+
+.StatusMenuBtnActive {
+  background: var(--bg-elevated);
+  font-weight: 600;
+}
+
+.StatusDot {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.StatusDotSmall {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  border: 2px solid var(--bg-base);
+}
+
+.AvatarWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+// ── Wyszukiwarka ──────────────────────────────────────────────────────────────
+
+.SearchSection {
+  position: relative;
+  padding: 0.8rem;
+  border-bottom: 0.1rem solid var(--border);
+  flex-shrink: 0;
+}
+
+.SearchWrap {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  overflow: hidden;
+}
+
+.SearchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1.3rem;
+  font-family: inherit;
+  padding: 0.7rem 1rem;
+  &:focus {
+    outline: none;
+  }
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.SearchClear {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0 0.8rem;
+  font-size: 1.2rem;
+  &:hover {
+    color: var(--text);
+  }
+}
+
+.SearchDropdown {
+  position: absolute;
+  top: calc(100% - 0.4rem);
+  left: 0.8rem;
+  right: 0.8rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  border-radius: 0.8rem;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  max-height: 40rem;
+  overflow-y: auto;
+}
+
+.SearchDropdownSection {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.8rem 1.2rem 0.4rem;
+  font-weight: 600;
+}
+
+.SearchDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.12s;
+  &:hover {
+    background: var(--bg-elevated);
+  }
+}
+
+.SearchDropdownItemName {
+  flex: 1;
+  font-size: 1.3rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.SearchDropdownActions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.SearchActionBtn {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-mid);
+  border-radius: 0.5rem;
+  color: var(--text);
+  font-size: 1.3rem;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s;
+  &:hover {
+    background: var(--bg-hover);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.SearchActionBtnSent {
+  color: #2ecc71;
+  border-color: #2ecc71;
+}
+
+.SearchDropdownLoading,
+.SearchDropdownEmpty {
+  padding: 1.2rem;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+// ── Lista czatów ──────────────────────────────────────────────────────────────
+
+.ContactsChatPreview {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  border-bottom: 0.1rem solid var(--border);
+  transition: background 0.12s;
+  &:hover {
+    background: var(--bg-surface);
+
+    .MuteBtn {
+      opacity: 1;
+    }
+  }
+
+  &ProfilePicture {
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+  }
+
+  &MessageContainer {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+  }
+
+  &MessageContainerName {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 14rem;
+    text-align: left;
+  }
+
+  &MessageContainerMessage {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 14rem;
+    margin-top: 0.2rem;
+    text-align: left;
+  }
+}
+
+.ContactsChatPreviewTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.ContactsChatPreviewBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.ChatPreviewTime {
+  font-size: 1rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ContactsChatPreviewActive {
+  background: var(--bg-surface) !important;
+  border-left: 3px solid var(--text);
+}
+
+.ContactsChatPreviewUnread {
+  background: var(--bg-surface);
+}
+
+.ChatNameUnread {
+  font-weight: 700;
+  color: var(--text) !important;
+}
+
+.LastMsgUnread {
+  color: var(--text) !important;
+  font-weight: 500;
+}
+
+.UnreadBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2ecc71;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 1rem;
+  padding: 0.1rem 0.6rem;
+  min-width: 2rem;
+  flex-shrink: 0;
+}
+
+.ChatPreviewTopRight {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.MuteBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.3rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+  line-height: 1;
+}
+
+.MutedIcon {
+  font-size: 1rem;
+  margin-left: 0.3rem;
+  opacity: 0.6;
+}
+
+.FriendRequestToast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  background: var(--bg-surface, #1e1e2e);
+  color: var(--text, #fff);
+  border: 1px solid var(--text-muted);
+  border-radius: 0.8rem;
+  padding: 1rem 1.6rem;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  animation: slideIn 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+.FriendRequestAcceptBtn {
+  background: var(--accent);
+  color: var(--accent-text);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-sans), sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity var(--transition);
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.LoadingText {
+  padding: 1.2rem;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+// ── Obszar czatu ──────────────────────────────────────────────────────────────
+
+.Chat {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-base);
+  position: relative;
+}
+
+.ChatContactInfo {
+  flex-shrink: 0;
+  height: 6rem;
+  border-bottom: 0.1rem solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  background: var(--bg-base);
+}
+
+.ChatContactInfoLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.ChatContactName {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text);
+}
+
+.ChatContactStatus {
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.ChatMessageContainer {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 0.4rem;
+  background: var(--bg-base);
+}
+
+.PendingFiles {
+  flex-shrink: 0;
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 1rem;
+  border-top: 0.1rem solid var(--border);
+  background: var(--bg-surface);
+}
+
+.PendingFile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-mid);
+  border-radius: 0.6rem;
+  padding: 0.4rem 0.8rem;
+  max-width: 16rem;
+}
+
+.PendingFileThumb {
+  width: 3.2rem;
+  height: 3.2rem;
+  object-fit: cover;
+  border-radius: 0.4rem;
+  flex-shrink: 0;
+}
+
+.PendingFileIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.PendingFileName {
+  flex: 1;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.PendingFileRemove {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  padding: 0 0.2rem;
+  &:hover {
+    color: var(--text);
+  }
+}
+
+.ChatMessageToolbar {
+  flex-shrink: 0;
+  border-top: 0.1rem solid var(--border);
+  padding: 0.8rem 1.2rem;
+  background: var(--bg-base);
+
+  form {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+}
+
+.AttachBtn {
+  background: transparent;
+  border: none;
+  font-size: 2.2rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s;
+  user-select: none;
+  &:hover {
+    background: var(--bg-elevated);
+  }
+}
+
+.ChatMessageToolbarInput {
+  flex: 1;
+  background: var(--bg-surface);
+  color: var(--text);
+  padding: 0.9rem 1.2rem;
+  font-size: 1.5rem;
+  font-family: inherit;
+  border-radius: 2rem;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+  &:focus {
+    outline: none;
+    border-color: var(--border-mid);
+  }
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.ChatMessageToolbarSubmit {
+  padding: 0.9rem 2rem;
+  font-size: 1.5rem;
+  font-family: inherit;
+  font-weight: 400;
+  border-radius: 2rem;
+  border: 1px solid var(--border-mid);
+  color: var(--text);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+          background 0.15s,
+          border-color 0.15s;
+  white-space: nowrap;
+  &:hover {
+    background: var(--bg-hover);
+    border-color: var(--text-muted);
+  }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.NoChatSelected {
+  margin: auto;
+  color: var(--text-muted);
+  font-size: 1.6rem;
+}
+
+// ── Bąbelki wiadomości ────────────────────────────────────────────────────────
+
+.MessageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  &:hover .MessageReactBtn {
+    opacity: 1;
+  }
+}
+
+.MessageWrapperOwn {
+  align-items: flex-end;
+}
+
+.MessageBubble {
+  position: relative;
+  max-width: 65%;
+  min-width: 6rem;
+  padding: 0.9rem 1.3rem 0.5rem;
+  border-radius: 1.8rem;
+  word-break: break-word;
+}
+
+// Używa CSS variables — automatycznie zmienia się z motywem
+.MessageBubbleOwn {
+  background-color: var(--msg-own);
+  border-bottom-right-radius: 0.4rem;
+  color: var(--text);
+}
+
+.MessageBubbleOther {
+  background-color: var(--msg-other);
+  border-bottom-left-radius: 0.4rem;
+  color: var(--text);
+}
+
+.MessageText {
+  font-size: 1.5rem;
+  line-height: 1.45;
+  margin: 0 0 0.3rem;
+  color: var(--text);
+}
+
+.MessageSender {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.2rem;
+  opacity: 0.85;
+
+  &:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+}
+
+.SearchHighlight {
+  background: rgba(255, 214, 0, 0.45);
+  color: inherit;
+  border-radius: 0.2rem;
+  padding: 0 0.1rem;
+}
+
+.MessageTime {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-faint);
+  text-align: right;
+  margin-top: 0.1rem;
+}
+
+.MessageReactBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -3.4rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-mid);
+  border-radius: 50%;
+  width: 2.8rem;
+  height: 2.8rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition:
+          opacity 0.15s,
+          background 0.12s;
+  z-index: 2;
+  &:hover {
+    background: var(--bg-hover);
+  }
+}
+
+.MessageWrapperOwn .MessageReactBtn {
+  right: auto;
+  left: -3.4rem;
+}
+
+.ReactionPickerFixed {
+  position: fixed;
+  display: flex;
+  gap: 0.2rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  border-radius: 2rem;
+  padding: 0.5rem 0.8rem;
+  z-index: 9999;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ReactionPickerBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 3.2rem;
+  height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+          transform 0.1s,
+          background 0.12s;
+  &:hover {
+    transform: scale(1.35);
+    background: var(--bg-elevated);
+  }
+}
+
+.ReactionPickerBtnActive {
+  background: var(--bg-elevated);
+}
+
+.ReactionBar {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: -0.5rem;
+  padding: 0 0.4rem;
+  position: relative;
+  z-index: 3;
+}
+
+.ReactionBarOwn {
+  justify-content: flex-end;
+}
+
+.ReactionChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-mid);
+  border-radius: 1rem;
+  padding: 0.2rem 0.7rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+  &:hover {
+    background: var(--bg-hover);
+  }
+}
+
+.ReactionChipActive {
+  border-color: var(--text);
+}
+
+.MessageAttachment {
+  margin-top: 0.5rem;
+}
+
+.MessageAttachmentImage {
+  max-width: 26rem;
+  max-height: 20rem;
+  border-radius: 1rem;
+  display: block;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.MessageAttachmentVideo {
+  max-width: 26rem;
+  border-radius: 1rem;
+  display: block;
+}
+
+.MessageAttachmentFile {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  background: var(--bg-elevated);
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.8rem;
+  font-size: 1.3rem;
+  transition: background 0.12s;
+  &:hover {
+    background: var(--bg-hover, #353230);
+  }
+}
+
+.TopSentinel {
+  height: 1px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.LoadingMore {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  padding: 0.5rem;
+  flex-shrink: 0;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ── MOBILE RESPONSIVE ─────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+
+@media (max-width: 768px) {
+  .container {
+    height: calc(100dvh - 5.6rem); // pełna wysokość minus header
+    flex-direction: column;
+    position: relative;
+  }
+
+  // ── Sidebar (lista czatów) ─────────────────────────────────────────────────
+  .Contacts {
+    width: 100%;
+    min-width: unset;
+    height: 100%;
+    border-right: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  // Klasa dodawana przez JS gdy otwarty jest chat
+  .ContactsHidden {
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  // ── Obszar czatu ────────────────────────────────────────────────────────────
+  .Chat {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ChatVisible {
+    transform: translateX(0);
+  }
+
+  // ── Header czatu (info o kontakcie) ─────────────────────────────────────────
+  .ChatContactInfo {
+    height: 5.6rem;
+    padding: 0 1rem;
+    gap: 0.8rem;
+  }
+
+  .ChatContactInfoLeft {
+    gap: 0.8rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ChatContactName {
+    font-size: 1.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+  }
+
+  .ChatContactStatus {
+    text-align: left;
+    font-size: 1rem;
+  }
+
+  // Przycisk powrotu "←" (back button) widoczny tylko na mobile
+  .BackButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 2rem;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    border-radius: 0.6rem;
+    flex-shrink: 0;
+    transition: background 0.12s;
+    &:hover {
+      background: var(--bg-elevated);
+    }
+  }
+
+  // ── Pole tekstowe ─────────────────────────────────────────────────────────
+  .ChatMessageToolbar {
+    padding: 0.6rem 0.8rem;
+    padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
+
+    form {
+      gap: 0.6rem;
+    }
+  }
+
+  .ChatMessageToolbarInput {
+    font-size: 1.4rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .ChatMessageToolbarSubmit {
+    padding: 0.8rem 1.4rem;
+    font-size: 1.3rem;
+  }
+
+  // ── Bąbelki wiadomości ────────────────────────────────────────────────────
+  .MessageBubble {
+    max-width: 80%;
+  }
+
+  .MessageAttachmentImage {
+    max-width: 20rem;
+    max-height: 16rem;
+  }
+
+  .MessageAttachmentVideo {
+    max-width: 20rem;
+  }
+
+  // ── Elementy wyszukiwarki / sidebaru ────────────────────────────────────────
+  .ContactsChatPreviewMessageContainerName,
+  .ContactsChatPreviewMessageContainerMessage {
+    max-width: calc(100vw - 14rem);
+  }
+
+  // ── Reaction button – nie chowaj za ekranem na mobile ─────────────────────
+  .MessageReactBtn {
+    opacity: 1;
+    right: -2.8rem;
+  }
+
+  .MessageWrapperOwn .MessageReactBtn {
+    right: auto;
+    left: -2.8rem;
+  }
+
+  // ── NoChatSelected – schowany na mobile (widać sidebar) ─────────────────────
+  .NoChatSelected {
+    display: none;
+  }
+}
+
+/* ── Nowa grupa ── */
+.NewGroupSection {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 0.1rem solid var(--border);
+  flex-shrink: 0;
+}
+
+.NewGroupBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  color: var(--text);
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--bg-hover, var(--bg-surface));
+  }
+}
+
+/* ── Modal ── */
+.ModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.Modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 1.2rem;
+  width: min(42rem, 90vw);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.4);
+}
+
+.ModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 1.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ModalTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.ModalClose {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.4rem;
+
+  &:hover {
+    color: var(--text);
+    background: var(--bg-elevated);
+  }
+}
+
+.ModalBody {
+  padding: 1.2rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.ModalInput {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  color: var(--text);
+  font-size: 1.3rem;
+  outline: none;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: var(--accent, #7c6ee6);
+  }
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.ModalHint {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.ModalSearchResults {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: 18rem;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  padding: 0.4rem;
+}
+
+.ModalSearchItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background 0.12s;
+
+  &:hover {
+    background: var(--bg-elevated);
+  }
+}
+
+.ModalSearchItemSelected {
+  background: color-mix(in srgb, var(--accent, #7c6ee6) 15%, transparent);
+
+  &:hover {
+    background: color-mix(in srgb, var(--accent, #7c6ee6) 22%, transparent);
+  }
+}
+
+.ModalSearchItemName {
+  flex: 1;
+  font-size: 1.3rem;
+  color: var(--text);
+}
+
+.ModalCheckmark {
+  font-size: 1.2rem;
+  color: var(--accent, #7c6ee6);
+  font-weight: 700;
+}
+
+.ModalMembers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ModalMemberChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ModalChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  background: color-mix(in srgb, var(--accent, #7c6ee6) 20%, transparent);
+  border-radius: 2rem;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+.ModalChipRemove {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 1rem;
+  padding: 0;
+  line-height: 1;
+
+  &:hover {
+    color: var(--text);
+  }
+}
+
+.ModalFooter {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  padding: 1rem 1.6rem 1.4rem;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ModalCancelBtn {
+  padding: 0.7rem 1.4rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bg-elevated);
+    color: var(--text);
+  }
+}
+
+.ModalConfirmBtn {
+  padding: 0.7rem 1.6rem;
+  background: var(--accent, #7c6ee6);
+  border: none;
+  border-radius: 0.8rem;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+/* ── Nagłówek czatu grupowego ── */
+.GroupAvatarStack {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.GroupStackAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-surface);
+  margin-left: -8px;
+  cursor: pointer;
+  object-fit: cover;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:hover {
+    z-index: 1;
+    position: relative;
+  }
+}
+
+.GroupAvatarMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px solid var(--bg-surface);
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-left: -8px;
+}
+
+/* ── Przycisk ustawień grupy w nagłówku ── */
+.GroupSettingsBtn {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.6rem;
+  color: var(--text-muted);
+  font-size: 1.6rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition:
+          background 0.15s,
+          color 0.15s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--bg-elevated);
+    color: var(--text);
+  }
+}
+
+.GroupSettingsBtnActive {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* ── Panel ustawień grupy ── */
+.GroupPanel {
+  position: absolute;
+  top: 6rem;
+  right: 0;
+  width: 28rem;
+  height: calc(100% - 6rem);
+  border-left: 1px solid var(--border);
+  background: var(--bg-surface);
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.GroupPanelAvatarRow {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.GroupPanelAvatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.GroupPanelSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.GroupPanelLabel {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin: 0;
+}
+
+.GroupPanelNameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.GroupPanelNameText {
+  font-size: 1.3rem;
+  color: var(--text);
+  flex: 1;
+}
+
+.GroupPanelNameEdit {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.GroupPanelNameInput {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  color: var(--text);
+  font-size: 1.3rem;
+  outline: none;
+
+  &:focus {
+    border-color: var(--accent, #7c6ee6);
+  }
+}
+
+.GroupPanelBtn {
+  padding: 0.4rem 0.9rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  color: var(--text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--bg-hover, var(--bg-surface));
+  }
+}
+
+.GroupPanelBtnSecondary {
+  padding: 0.4rem 0.9rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--text);
+  }
+}
+
+.GroupPanelMember {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 0.6rem;
+  &:hover {
+    background: var(--bg-elevated);
+  }
+}
+
+.GroupPanelMemberAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.GroupPanelMemberName {
+  flex: 1;
+  font-size: 1.3rem;
+  color: var(--text);
+}
+
+.GroupPanelAdminBadge {
+  font-size: 1rem;
+  color: var(--accent, #7c6ee6);
+  background: color-mix(in srgb, var(--accent, #7c6ee6) 15%, transparent);
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+}
+
+.GroupPanelBtnDanger {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 0.4rem;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+    background: var(--bg-elevated);
+  }
+}
+
+.GroupPanelBtnDangerFull {
+  width: 100%;
+  padding: 0.7rem;
+  background: transparent;
+  border: 1px solid #e74c3c;
+  border-radius: 0.8rem;
+  color: #e74c3c;
+  font-size: 1.3rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(231, 76, 60, 0.1);
+  }
+}
+
+.GroupPanelCloseRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.GroupPanelTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.GroupPanelAddResults {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+  max-height: 14rem;
+  overflow-y: auto;
+}
+
+.GroupPanelAddResultItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 0.5rem;
+  &:hover {
+    background: var(--bg-elevated);
+  }
+}
+
+// ── Reaction tooltip ────────────────────────────────────────────────────────
+
+.ReactionTooltipFixed {
+  position: fixed;
+  transform: translate(-50%, -100%) translateY(-0.6rem);
+  z-index: 9999;
+  background: var(--bg-elevated, #1e1e2e);
+  border: 1px solid var(--border-mid, rgba(255, 255, 255, 0.1));
+  border-radius: 0.8rem;
+  padding: 0.6rem 0.9rem;
+  min-width: 10rem;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  animation: tooltipFadeIn 0.15s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--bg-elevated, #1e1e2e);
+  }
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.ReactionTooltipEmoji {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.ReactionTooltipUsers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  width: 100%;
+}
+
+.ReactionTooltipUser {
+  font-size: 1.1rem;
+  color: var(--text, #e0e0e0);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 18rem;
+}
+
+// ── Typing indicator ─────────────────────────────────────────────────────────
+
+.TypingIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1.2rem 0.2rem;
+  min-height: 2.8rem;
+  animation: typingFadeIn 0.2s ease;
+}
+
+@keyframes typingFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.TypingAvatars {
+  display: flex;
+  align-items: center;
+}
+
+.TypingAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--bg-surface, #12121a);
+  margin-left: -0.5rem;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.TypingDots {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+
+  span {
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--text-muted, #888);
+    animation: typingBounce 1.2s ease-in-out infinite;
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes typingBounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-0.4rem);
+    opacity: 1;
+  }
+}
+
+.TypingLabel {
+  font-size: 1.1rem;
+  color: var(--text-muted, #888);
+  font-style: italic;
+}
+
+// ── In-app powiadomienia (toast) ──────────────────────────────────────────────
+
+.InAppNotifContainer {
+  position: fixed;
+  bottom: 1.2rem;
+  right: 1.2rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  pointer-events: none;
+}
+
+.InAppNotif {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  border-radius: 1rem;
+  padding: 0.9rem 1.2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  min-width: 22rem;
+  max-width: 32rem;
+  pointer-events: auto;
+  cursor: pointer;
+  animation: notifSlideIn 0.2s ease;
+
+  &:hover {
+    background: var(--bg-elevated);
+  }
+}
+
+.InAppNotifAvatar {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.InAppNotifBody {
+  flex: 1;
+  overflow: hidden;
+}
+
+.InAppNotifTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.InAppNotifMsg {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.1rem;
+}
+
+.InAppNotifClose {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  flex-shrink: 0;
+  &:hover { color: var(--text); }
+}
+
+@keyframes notifSlideIn {
+  from { opacity: 0; transform: translateY(1rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── Chat message search (in-window) ──────────────────────────────────────────
+
+.ChatSearchBar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ChatSearchInput {
+  flex: 1;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  color: var(--text);
+  font-size: 1.2rem;
+  font-family: inherit;
+  padding: 0.5rem 0.8rem;
+  &:focus { outline: none; border-color: var(--accent, #7c6af7); }
+  &::placeholder { color: var(--text-muted); }
+}
+
+.ChatSearchNav {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.ChatSearchNavBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 0.4rem;
+  &:hover { background: var(--bg-elevated); color: var(--text); }
+  &:disabled { opacity: 0.3; cursor: default; }
+}
+
+.ChatSearchCloseBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  &:hover { color: var(--text); }
+}
+
+.MessageHighlight {
+  background: rgba(255, 210, 0, 0.35);
+  border-radius: 0.2rem;
+}
+
+// ── Search icon w HeaderSearchRow ────────────────────────────────────────────
+
+.SearchRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 0.1rem solid var(--border);
+  flex-shrink: 0;
+}
+
+.SearchRowSearch {
+  flex: 1;
+}
+
+.AddFriendIconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 0.8rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 1.6rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  &:hover { background: var(--bg-hover, var(--bg-surface)); }
+}
+
+.NewGroupIconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 0.8rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 1.6rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  &:hover { background: var(--bg-hover, var(--bg-surface)); }
+}
+// ── Drag & drop overlay ──────────────────────────────────────────────────────
+.ChatDragOver {
+  outline: 2px dashed var(--accent, #7c6fa0);
+  outline-offset: -4px;
+}
+
+.DragOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
+.DragOverlayInner {
+  padding: 1.5rem 3rem;
+  border: 2px dashed var(--accent, #7c6fa0);
+  border-radius: 1rem;
+  color: var(--text-primary, #fff);
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: var(--bg-elevated);
+  pointer-events: none;
+}
+
+// ── Image Lightbox ───────────────────────────────────────────────────────────
+.LightboxOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  animation: fadeIn 0.15s ease;
+}
+
+.LightboxImg {
+  max-width: 92vw;
+  max-height: 90vh;
+  border-radius: 0.6rem;
+  object-fit: contain;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.6);
+  cursor: default;
+  user-select: none;
+  animation: scaleIn 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.LightboxClose {
+  position: fixed;
+  top: 1.4rem;
+  right: 1.8rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s;
+  z-index: 1001;
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+// ── File Viewer (PDF / Text editor) ─────────────────────────────────────────
+.FileViewerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.15s ease;
+  padding: 2rem;
+}
+
+.FileViewerOverlayFullscreen {
+  padding: 0;
+}
+
+.FileViewerPanel {
+  width: min(92vw, 96rem);
+  height: min(88vh, 76rem);
+  background: var(--bg-base);
+  border-radius: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.6);
+  animation: scaleIn 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid var(--border);
+}
+
+.FileViewerPanelFullscreen {
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  border: none;
+}
+
+// ── Header ──
+.FileViewerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1rem 0.7rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 1rem;
+  background: var(--bg-elevated);
+}
+
+.FileViewerTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.FileViewerTypeTag {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.4rem;
+  background: var(--accent, #7c6fa0);
+  color: #f5f5f5;
+  flex-shrink: 0;
+
+  :global([data-theme='light']) & {
+    color: #1a1a1a;
+  }
+
+  :global([data-theme='dark']) & {
+    color: #f5f5f5;
+  }
+}
+
+.FileViewerTitle {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.FileViewerHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.FileViewerToolBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.6rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s;
+  &:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+}
+
+.FileViewerToolBtnActive {
+  background: var(--accent, #7c6fa0) !important;
+  color: #fff !important;
+}
+
+.FileViewerToolBtnSave {
+  background: #2e7d32 !important;
+  &:hover { background: #388e3c !important; }
+}
+
+.FileViewerCloseBtn {
+  &:hover { background: rgba(231, 76, 60, 0.5) !important; }
+}
+
+// ── Body ──
+.FileViewerBody {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-base);
+}
+
+.FileViewerIframe {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+}
+
+.FileViewerEditorWrap {
+  flex: 1;
+  display: flex;
+  overflow: auto;
+  min-height: 0;
+}
+
+.FileViewerLineNums {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 1.4rem 0.8rem 1.4rem 1.2rem;
+  background: var(--bg-elevated);
+  border-right: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: 'Fira Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 1.25rem;
+  line-height: 1.75;
+  user-select: none;
+  flex-shrink: 0;
+  min-width: 3.6rem;
+  pointer-events: none;
+
+  span {
+    display: block;
+    line-height: 1.75;
+  }
+}
+
+.FileViewerPre {
+  flex: 1;
+  overflow: visible;
+  margin: 0;
+  padding: 1.4rem 1.6rem;
+  font-family: 'Fira Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 1.25rem;
+  line-height: 1.75;
+  color: var(--text-primary);
+  white-space: pre;
+  tab-size: 2;
+}
+
+.FileViewerTextarea {
+  flex: 1;
+  overflow: visible;
+  margin: 0;
+  padding: 1.4rem 1.6rem;
+  font-family: 'Fira Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 1.25rem;
+  line-height: 1.75;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  white-space: pre;
+  tab-size: 2;
+  caret-color: var(--accent, #7c6fa0);
+}
+
+.FileViewerLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex: 1;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+}
+
+.FileViewerSpinner {
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 2px solid var(--border, #333);
+  border-top-color: var(--accent, #7c6fa0);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+// ── Footer ──
+.FileViewerFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-elevated);
+  flex-shrink: 0;
+  gap: 1rem;
+}
+
+.FileViewerFooterInfo {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.FileViewerFooterActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+// ── Attachment file tile ──
+.MessageAttachmentFileTile {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.8rem 1.2rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border, #333);
+  border-radius: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.12s, border-color 0.12s;
+  max-width: 28rem;
+  text-align: left;
+  &:hover {
+    background: var(--bg-hover, #353230);
+    border-color: var(--accent, #7c6fa0);
+  }
+}
+
+.MessageAttachmentFileIcon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.MessageAttachmentFileName {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+
+.MessageAttachmentFileHint {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+// ── Attachment file row (link + eye button) ──────────────────────────────────
+.MessageAttachmentFileRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.MessageAttachmentViewBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border, #333);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.12s, border-color 0.12s;
+  &:hover {
+    background: var(--accent, #7c6fa0);
+    border-color: var(--accent, #7c6fa0);
+    color: #fff;
+  }
+}
+
+.FileViewerSaveError {
+  padding: 0.5rem 1rem;
+  background: rgba(231, 76, 60, 0.15);
+  border-top: 1px solid rgba(231, 76, 60, 0.4);
+  color: #e74c3c;
+  font-size: 1.1rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+// ── Shared keyframes ─────────────────────────────────────────────────────────
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0 }
+  to   { transform: scale(1);   opacity: 1 }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg) }
+}

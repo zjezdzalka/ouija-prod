@@ -1,0 +1,842 @@
+{
+  "info": {
+    "_postman_id": "b287886c-6ebd-4573-b981-9de998b68e45",
+    "name": "ouija",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27041664"
+  },
+  "item": [
+    {
+      "name": "health",
+      "item": [
+        {
+          "name": "/health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "/",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "User ID",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": null,
+                  "description": "User E-mail",
+                  "disabled": true
+                },
+                {
+                  "key": "nickname",
+                  "value": null,
+                  "description": "User Nickname",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "",
+                  "description": "New user E-mail",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "password\n",
+                  "value": "",
+                  "description": "New user password",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "nickname\n",
+                  "value": "",
+                  "description": "New user nickname",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:id",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "nickname",
+                  "value": "",
+                  "description": "Update user NIckname",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "",
+                  "description": "Update user Password",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/:id",
+              "host": ["{{base_url}}"],
+              "path": [":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/:id",
+              "host": ["{{base_url}}"],
+              "path": [":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "msg",
+      "item": [
+        {
+          "name": "/chats/:chatId/messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId/messages",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId", "messages"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": null,
+                  "description": "limit amount of messages",
+                  "disabled": true
+                },
+                {
+                  "key": "lastId",
+                  "value": null,
+                  "description": "i actually dont know what this does lmao",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/chats/:chatId/messages",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID",
+                  "type": "text"
+                },
+                {
+                  "key": "content\n",
+                  "value": "",
+                  "description": "Message content",
+                  "type": "text"
+                },
+                {
+                  "key": "attachments",
+                  "description": "Attachments within message",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "reactions",
+                  "description": "Reactions under message (presumably none)",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId/messages",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId", "messages"],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/chats/:chatId/messages/:messageId",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "content",
+                  "value": "",
+                  "description": "Message content",
+                  "type": "text"
+                },
+                {
+                  "key": "attachments",
+                  "description": "Attachments under Message",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "reactions",
+                  "description": "Reactions under Message",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId/messages/:messageId",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId", "messages", ":messageId"],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                },
+                {
+                  "key": "messageId",
+                  "value": "",
+                  "description": "Message ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/chats/:chatId/messages/:messageId",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId/messages/:messageId",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId", "messages", ":messageId"],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                },
+                {
+                  "key": "messageId",
+                  "value": "",
+                  "description": "Message ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "friendship",
+      "item": [
+        {
+          "name": "/users/:userId/friends",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/:userId/friends?status",
+              "host": ["{{base_url}}"],
+              "path": ["users", ":userId", "friends"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": null,
+                  "description": "Friendships according to status (PENDING, ACCEPTED, BLOCKED)\n"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/users/:userId/friends",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "friendId",
+                  "value": "",
+                  "description": "ID of friend user wants to send req to",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/users/:userId/friends",
+              "host": ["{{base_url}}"],
+              "path": ["users", ":userId", "friends"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/users/:userId/friends/:friendId",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Update status of friendship",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/users/:userId/friends/:friendId",
+              "host": ["{{base_url}}"],
+              "path": ["users", ":userId", "friends", ":friendId"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID"
+                },
+                {
+                  "key": "friendId",
+                  "value": "",
+                  "description": "Friend ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/users/:userId/friends/:friendId",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/:userId/friends/:friendId",
+              "host": ["{{base_url}}"],
+              "path": ["users", ":userId", "friends", ":friendId"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID"
+                },
+                {
+                  "key": "friendId",
+                  "value": "",
+                  "description": "Friend ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "chat",
+      "item": [
+        {
+          "name": "/chats/:chatId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId"],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/users/:userId/chats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/:userId/chats",
+              "host": ["{{base_url}}"],
+              "path": ["users", ":userId", "chats"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/chats",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "description": "chat name",
+                  "type": "text"
+                },
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "type of chat",
+                  "type": "text"
+                },
+                {
+                  "key": "userIds\n",
+                  "value": "",
+                  "description": "idk if this works",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/chats",
+              "host": ["{{base_url}}"],
+              "path": ["chats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/chats/:chatId",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "description": "Chat name",
+                  "type": "text"
+                },
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "Chat type",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId"],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/chats/:chatId",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId"],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/chats/:chatId/members",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID",
+                  "type": "text"
+                },
+                {
+                  "key": "role",
+                  "value": "",
+                  "description": "Assign role to user",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId/members",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId", "members"],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/chats/:chatId/members/:userId",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "",
+                  "description": "New user role",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId/members/:userId",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId", "members", ":userId"],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                },
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/chats/:chatId/members/:userId",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{base_url}}/chats/:chatId/members/:userId",
+              "host": ["{{base_url}}"],
+              "path": ["chats", ":chatId", "members", ":userId"],
+              "variable": [
+                {
+                  "key": "chatId",
+                  "value": "",
+                  "description": "Chat ID"
+                },
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "reactions",
+      "item": [
+        {
+          "name": "/messages/:messageId/reactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/messages/:messageId/reactions",
+              "host": ["{{base_url}}"],
+              "path": ["messages", ":messageId", "reactions"],
+              "variable": [
+                {
+                  "key": "messageId",
+                  "value": "",
+                  "description": "Message ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/messages/:messageId/reactions",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "The ID of user who added",
+                  "type": "text"
+                },
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "Type of emote",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/messages/:messageId/reactions",
+              "host": ["{{base_url}}"],
+              "path": ["messages", ":messageId", "reactions"],
+              "variable": [
+                {
+                  "key": "messageId",
+                  "value": "",
+                  "description": "Message ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/messages/:messageId/reactions/:userId",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "Reaction type",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/messages/:messageId/reactions/:userId",
+              "host": ["{{base_url}}"],
+              "path": ["messages", ":messageId", "reactions", ":userId"],
+              "variable": [
+                {
+                  "key": "messageId",
+                  "value": "",
+                  "description": "Message ID"
+                },
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/messages/:messageId/reactions/:userId",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{base_url}}/messages/:messageId/reactions/:userId",
+              "host": ["{{base_url}}"],
+              "path": ["messages", ":messageId", "reactions", ":userId"],
+              "variable": [
+                {
+                  "key": "messageId",
+                  "value": "",
+                  "description": "Message ID"
+                },
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}

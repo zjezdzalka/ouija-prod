@@ -1,0 +1,8 @@
+export { healthRouter } from './health.router'
+export { authRouter } from './auth.router'
+export { userRouter } from './user.router'
+export { msgRouter } from './message.router'
+export { friendshipRouter } from './friendship.router'
+export { chatRouter } from './chat.router'
+export { reactionRouter } from './reaction.router'
+export { mediaRouter } from './media.router'

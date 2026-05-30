@@ -1,0 +1,384 @@
+// ── Overlay & Backdrop ─────────────────────────────────────────────────────────
+
+.Overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayFadeIn 0.18s ease;
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+// ── Card ───────────────────────────────────────────────────────────────────────
+
+.Popup {
+  position: relative;
+  z-index: 1;
+  width: 32rem;
+  max-width: calc(100vw - 3.2rem);
+  background: #1a1816;
+  border: 1px solid #2e2b29;
+  border-radius: 1.6rem;
+  overflow: hidden;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  animation: popupSlideIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popupSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(1.2rem);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// ── Banner (gradient top strip) ────────────────────────────────────────────────
+
+.Banner {
+  position: relative;
+  height: 8rem;
+  background: linear-gradient(135deg, #2d2a38 0%, #1f1d2a 50%, #1a1816 100%);
+  border-bottom: 1px solid #2e2b29;
+}
+
+.CloseBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #3a3836;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.6);
+  width: 2.8rem;
+  height: 2.8rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  line-height: 1;
+  z-index: 2;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f3f3f4;
+  }
+}
+
+.AvatarWrap {
+  position: absolute;
+  bottom: -2.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.Avatar {
+  display: block;
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: 50%;
+  border: 3px solid #1a1816;
+  object-fit: cover;
+  background: #2a2826;
+}
+
+.AvatarSkeleton {
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: 50%;
+  border: 3px solid #1a1816;
+  background: #2a2826;
+  animation: shimmer 1.4s infinite;
+}
+
+.StatusRing {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 2.5px solid #1a1816;
+}
+
+// ── Body ───────────────────────────────────────────────────────────────────────
+
+.Body {
+  padding: 3.6rem 2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.Name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f3f3f4;
+  margin: 0 0 0.3rem;
+  letter-spacing: -0.02em;
+}
+
+.Username {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0 0 0.8rem;
+}
+
+.StatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2rem;
+  padding: 0.35rem 1rem;
+  font-size: 1.2rem;
+}
+
+.StatusDot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+// ── Divider ────────────────────────────────────────────────────────────────────
+
+.Divider {
+  width: 100%;
+  height: 1px;
+  background: #2e2b29;
+  margin: 1.4rem 0;
+}
+
+// ── Sections ───────────────────────────────────────────────────────────────────
+
+.Section {
+  width: 100%;
+  text-align: left;
+}
+
+.SectionLabel {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 0.7rem;
+}
+
+.MetaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.75);
+
+  svg {
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+}
+
+// ── Mutual Friends ─────────────────────────────────────────────────────────────
+
+.MutualsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.MutualItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.MutualAvatarWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.MutualAvatar {
+  border-radius: 50%;
+  display: block;
+  background: #2a2826;
+  object-fit: cover;
+  object-position: center;
+}
+
+.MutualStatusDot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  border: 2px solid #1a1816;
+}
+
+.MutualName {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.MutualsEmpty {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.25);
+  margin: 0;
+}
+
+// ── Actions ────────────────────────────────────────────────────────────────────
+
+.Actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.ActionBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 1rem 1.6rem;
+  border-radius: 1rem;
+  font-size: 1.4rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    opacity 0.15s;
+  border: 1px solid transparent;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.ActionBtnPrimary {
+  background: #f3f3f4;
+  color: #14110f;
+  border-color: #f3f3f4;
+
+  &:hover:not(:disabled) {
+    background: #ddd;
+    border-color: #ddd;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.ActionBtnSecondary {
+  background: transparent;
+  color: #f3f3f4;
+  border-color: #3a3836;
+
+  &:hover:not(:disabled) {
+    background: #2a2826;
+    border-color: #555;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+  }
+}
+
+.ActionBtnDisabled {
+  opacity: 0.45 !important;
+}
+
+.ActionBtnFriends {
+  color: #2ecc71;
+  border-color: rgba(46, 204, 113, 0.3);
+  opacity: 0.8;
+}
+
+.SkeletonBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0.5rem;
+}
+
+.SkeletonLine {
+  background: #2a2826;
+  border-radius: 0.5rem;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.ErrorText {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 1.3rem;
+  margin: 0;
+}
+// ══════════════════════════════════════════════════════════════════════════════
+// ── MOBILE RESPONSIVE ─────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+
+@media (max-width: 768px) {
+  .Popup {
+    width: calc(100vw - 2.4rem);
+    max-width: 100%;
+    border-radius: 1.4rem;
+  }
+
+  .ActionBar {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 1rem 1.2rem;
+  }
+
+  .ActionBtn {
+    flex: 1 1 auto;
+    min-width: 8rem;
+    text-align: center;
+    justify-content: center;
+  }
+}

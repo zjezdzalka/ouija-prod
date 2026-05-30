@@ -1,0 +1,22 @@
+.container {
+  &Title {
+    font-size: 3.2rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+  }
+
+  &Logo {
+    height: auto;
+    width: 36rem;
+    opacity: 0.9;
+  }
+
+  &Text {
+    padding: 0 1.6rem;
+    font-size: 1.6rem;
+    color: var(--text-muted);
+    max-width: 52rem;
+    line-height: 1.6;
+  }
+}

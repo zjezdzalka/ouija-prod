@@ -1,0 +1,64 @@
+{
+  "name": "ouija",
+  "version": "1.0.0",
+  "private": true,
+  "directories": {
+    "doc": "docs"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace=apps/web run dev",
+    "dev:api": "npm --workspace=apps/api run dev",
+    "build:web": "npm --workspace=apps/web build",
+    "build:api": "npm --workspace=apps/api build",
+    "start:web": "npm --workspace=apps/web start",
+    "start:api": "npm --workspace=apps/api start",
+    "prisma:reset": "npm --workspace=apps/api run prisma:reset",
+    "prisma:dev": "npm --workspace=apps/api run prisma:dev",
+    "prisma:generate": "npm --workspace=apps/api run prisma:generate",
+    "prisma:studio": "npm --workspace=apps/api run studio",
+    "format": "prettier --write \"apps/**/*.{ts,tsx,json,scss}\"",
+    "format:check": "prettier --check \"apps/**/*.{ts,tsx,json,scss}\"",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix",
+    "test:api": "npm --workspace=apps/api run test",
+    "test:api:watch": "npm --workspace=apps/api run test:watch",
+    "test:web": "npm --workspace=apps/web run test"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,scss}": [
+      "prettier --write"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zjezdzalka/ouija.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zjezdzalka/ouija/issues"
+  },
+  "homepage": "https://github.com/zjezdzalka/ouija#readme",
+  "devDependencies": {
+    "@eslint/json": "^1.0.1",
+    "@next/eslint-plugin-next": "^16.1.6",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0"
+  },
+  "dependencies": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
+}

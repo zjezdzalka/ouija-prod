@@ -1,0 +1,347 @@
+// ── Overlay & Backdrop ─────────────────────────────────────────────────────────
+
+.Overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayFadeIn 0.18s ease;
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+// ── Card ───────────────────────────────────────────────────────────────────────
+
+.Popup {
+  position: relative;
+  z-index: 1;
+  width: 36rem;
+  max-width: calc(100vw - 3.2rem);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #1a1816;
+  border: 1px solid #2e2b29;
+  border-radius: 1.6rem;
+  overflow-x: hidden;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  animation: popupSlideIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes popupSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(1.2rem);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// ── Banner ────────────────────────────────────────────────────────────────────
+
+.Banner {
+  position: relative;
+  height: 10rem;
+  background: linear-gradient(135deg, #2d2a38 0%, #1f1d2a 50%, #1a1816 100%);
+  border-bottom: 1px solid #2e2b29;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.CloseBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #3a3836;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.6);
+  width: 2.8rem;
+  height: 2.8rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  line-height: 1;
+  z-index: 2;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f3f3f4;
+  }
+}
+
+.GroupIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background: #2a2826;
+  border: 3px solid #1a1816;
+  position: absolute;
+  bottom: -3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  overflow: hidden;
+}
+
+// ── Body ───────────────────────────────────────────────────────────────────────
+
+.Body {
+  padding: 4rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.Name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f3f3f4;
+  margin: 0 0 0.8rem;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.MetaBadges {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 0.4rem;
+}
+
+.Badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  padding: 0.3rem 0.9rem;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+// ── Divider ────────────────────────────────────────────────────────────────────
+
+.Divider {
+  width: 100%;
+  height: 1px;
+  background: #2e2b29;
+  margin: 1.2rem 0;
+}
+
+// ── Section ────────────────────────────────────────────────────────────────────
+
+.Section {
+  width: 100%;
+  text-align: left;
+}
+
+.SectionLabel {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 0.8rem;
+}
+
+// ── Members ────────────────────────────────────────────────────────────────────
+
+.MemberList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: 24rem;
+  overflow-y: auto;
+}
+
+.MemberRow {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.8rem;
+  transition: background 0.12s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+
+    .RemoveBtn {
+      opacity: 1;
+    }
+  }
+}
+
+.MemberAvatarWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.MemberAvatar {
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a2826;
+}
+
+.MemberStatusDot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  border: 2px solid #1a1816;
+}
+
+.MemberInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.MemberName {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #f3f3f4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.YouBadge {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 400;
+}
+
+.MemberStatus {
+  font-size: 1.1rem;
+}
+
+.AdminBadge {
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f39c12;
+  background: rgba(243, 156, 18, 0.12);
+  border: 1px solid rgba(243, 156, 18, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.RemoveBtn {
+  flex-shrink: 0;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-muted, #7a7672);
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0.3rem 0.4rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+
+  &:hover {
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.12);
+  }
+}
+
+// ── Actions ────────────────────────────────────────────────────────────────────
+
+.Actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.ActionBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 1rem 1.6rem;
+  border-radius: 1rem;
+  font-size: 1.4rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    opacity 0.15s;
+  border: 1px solid transparent;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.ActionBtnPrimary {
+  background: #f3f3f4;
+  color: #14110f;
+  border-color: #f3f3f4;
+
+  &:hover:not(:disabled) {
+    background: #ddd;
+    border-color: #ddd;
+  }
+}
+
+// ── Mobile ─────────────────────────────────────────────────────────────────────
+
+@media (max-width: 768px) {
+  .Popup {
+    width: calc(100vw - 2.4rem);
+    max-width: 100%;
+    border-radius: 1.4rem;
+  }
+
+  .MemberList {
+    max-height: 16rem;
+  }
+}

@@ -1,0 +1,141 @@
+// ── Login page ─────────────────────────────────────────────────────────────────
+// Strona logowania wyrenderowana wewnątrz .container (flex column, justify-center)
+// Poprawka: formularz używa var(--bg-card) zamiast hardcoded rgba(18,18,18,0.85)
+// dzięki czemu motyw jasny/ciemny działa poprawnie.
+
+.Form {
+  width: min(46rem, 90vw);
+  padding: 4rem 3.6rem;
+  // WAŻNE: var(--bg-card) zamiast rgba(18,18,18,0.85) — reaguje na motyw
+  background-color: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2.4rem 5rem rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  transition:
+    background-color var(--transition),
+    border-color var(--transition);
+
+  &Label {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0;
+    text-align: left;
+    margin-bottom: 0.6rem;
+    margin-left: 0.2rem;
+  }
+
+  &Input {
+    width: 100%;
+    // Tło inputa — jasne w light mode, ciemne w dark mode
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.4rem;
+    font-size: 1.5rem;
+    font-family: var(--font-sans), serif;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+    transition:
+      background var(--transition),
+      border-color var(--transition);
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+
+    &:focus {
+      outline: none;
+      background: var(--bg-hover);
+      border-color: var(--border-mid);
+    }
+
+    // Override browser autofill yellow background
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 100px var(--bg-elevated) inset !important;
+      box-shadow: 0 0 0 100px var(--bg-elevated) inset !important;
+      -webkit-text-fill-color: var(--text-primary) !important;
+      caret-color: var(--text-primary);
+      border-color: var(--border-mid) !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    &[aria-invalid='true'] {
+      border-color: rgba(248, 113, 113, 0.5);
+      background: rgba(248, 113, 113, 0.05);
+    }
+  }
+
+  &Error {
+    font-size: 1.2rem;
+    color: #f87171;
+    margin: 0.2rem 0 1.2rem 0.2rem;
+    text-align: left;
+  }
+
+  &Submit {
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1.3rem;
+    background: var(--accent);
+    color: var(--accent-text);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: var(--font-sans), serif;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition:
+      opacity var(--transition),
+      transform 0.1s ease;
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  // Spacing między polami
+  & > label + input + label,
+  & > label + input + p + label {
+    margin-top: 0.8rem;
+  }
+
+  .Link {
+    display: block;
+    margin-top: 2.4rem;
+    color: var(--text-muted);
+    font-size: 1.3rem;
+    text-align: center;
+    text-decoration: none;
+
+    p {
+      color: var(--text-muted);
+    }
+
+    .Underline {
+      color: var(--text-primary);
+      font-weight: 500;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 0.1em;
+    }
+  }
+}

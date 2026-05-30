@@ -1,0 +1,10 @@
+// Register dziedziczy wszystkie klasy z Login.module.scss przez @use,
+// ale nadpisujemy height — rejestracja ma 4 pola, więc karta musi być wyższa,
+// a najlepiej auto (treść wyznacza rozmiar).
+@use '../login/Login.module';
+
+.Form {
+  // Celowo nie ustawiamy height — karta rośnie z treścią.
+  // Usuwamy height: 80% które "zgniata" formularz w pionie.
+  height: auto;
+}

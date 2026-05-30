@@ -1,0 +1,151 @@
+// ── CSS Variables ────────────────────────────────────────────────────────────
+// Aplikowane przez data-theme="dark|light" na <html>
+// Zmieniane przez Profile > Ustawienia > Motyw
+// Używane we WSZYSTKICH komponentach przez var(--)
+
+:root,
+[data-theme='dark'] {
+  --bg-base: #14110f;
+  --bg-surface: #1e1c1a;
+  --bg-elevated: #2a2826;
+  --bg-hover: #35323c;
+  --border: #2e2b29;
+  --border-mid: #3a3836;
+  --text: #f3f3f4;
+  --text-muted: #aaaaaa;
+  --text-faint: rgba(243, 243, 244, 0.45);
+  --msg-own: #5c5450;
+  --msg-other: #2d2b35;
+
+  // ── Aliasy (Header, Login, Register używają tych nazw) ──
+  --text-primary: #f3f3f4;
+  --text-secondary: #aaaaaa;
+
+  // ── Akcent ──
+  --accent: #ffffff;
+  --accent-text: #0a0a0a;
+
+  // ── Tło headera/kart ──
+  --bg-card: rgba(18, 18, 18, 0.85);
+  --header-bg: rgba(10, 10, 10, 0.8);
+
+  // ── Misc ──
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1.6rem;
+  --transition: 0.2s ease;
+  --font-sans: 'Kumbh Sans', 'Roboto', sans-serif;
+}
+
+[data-theme='light'] {
+  --bg-base: #f5f2ee;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ede9e4;
+  --bg-hover: #e0dbd5;
+  --border: #d0cbc5;
+  --border-mid: #b8b2ab;
+  --text: #1a1714;
+  --text-muted: #5a5550;
+  --text-faint: rgba(26, 23, 20, 0.45);
+  --msg-own: #c9a96e;
+  --msg-other: #e8e4de;
+
+  // ── Aliasy ──
+  --text-primary: #1a1714;
+  --text-secondary: #5a5550;
+
+  // ── Akcent ──
+  --accent: #1a1714;
+  --accent-text: #f5f2ee;
+
+  // ── Tło headera/kart ──
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --header-bg: rgba(245, 242, 238, 0.85);
+
+  // ── Misc ──
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1.6rem;
+  --transition: 0.2s ease;
+  --font-sans: 'Kumbh Sans', 'Roboto', sans-serif;
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────────
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kumbh Sans', 'Roboto', sans-serif;
+}
+
+html {
+  font-size: 10px;
+
+  body {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--bg-base);
+    color: var(--text);
+    transition:
+            background-color 0.25s ease,
+            color 0.25s ease;
+
+    .container {
+      width: 100%;
+      min-height: 90vh;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--bg-base);
+      color: var(--text);
+      text-align: center;
+      font-weight: 500;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ── HEADER MOBILE ─────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+
+@media (max-width: 768px) {
+  .Header {
+    padding-inline: 1.4rem;
+    gap: 1rem;
+    height: 5.6rem;
+  }
+
+  .HeaderRight {
+    gap: 1.6rem;
+  }
+
+  .HeaderLink {
+    font-size: 1.3rem;
+  }
+
+  .HeaderText {
+    font-size: 1.6rem;
+  }
+
+  .HeaderLogout {
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .Header {
+    padding-inline: 1rem;
+  }
+
+  .HeaderRight {
+    gap: 1rem;
+  }
+
+  .HeaderLink {
+    font-size: 1.2rem;
+  }
+}

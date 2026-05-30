@@ -22,6 +22,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps/api/dist ./dist
 COPY --from=builder /app/apps/api/prisma ./prisma
 COPY apps/api/entrypoint.sh ./entrypoint.sh
+COPY apps/api/prisma.config.ts ./prisma.config.ts
 
 EXPOSE 3001
 

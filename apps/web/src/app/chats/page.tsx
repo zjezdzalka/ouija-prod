@@ -270,7 +270,7 @@ function ChatsWithUser({ userId }: { userId: string }) {
     )
 
     apiFetch(`${API_URL}/api/chats/${activeChatId}/messages?limit=${PAGE_SIZE}`)
-      .then((r) => r.json())
+      .then((r) => { if (!r.ok) throw new Error(`${r.status}`); return r.json() })
       .then((data: Message[]) => {
         const sorted = [...data].reverse()
         setMessages(sorted)

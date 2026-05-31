@@ -92,6 +92,7 @@ export const serveFile = async (req: Request, res: Response) => {
 
     // Let Express set content-type + enable browser caching (1 week)
     res.setHeader('Cache-Control', 'public, max-age=604800, immutable')
+    res.setHeader('Access-Control-Allow-Origin', '*')
     res.sendFile(filePath)
   } catch (error: unknown) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT' || (error as NodeJS.ErrnoException).code === 'EACCES') {

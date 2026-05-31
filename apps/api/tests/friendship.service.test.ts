@@ -58,7 +58,7 @@ describe('friendshipService.sendFriendRequest', () => {
 
   it('throws when sending to yourself', async () => {
     await expect(friendshipService.sendFriendRequest('u1', 'u1')).rejects.toThrow(
-      'Cannot befriend yourself'
+        'Cannot befriend yourself'
     )
   })
 
@@ -67,7 +67,7 @@ describe('friendshipService.sendFriendRequest', () => {
     mockRepo.getFriendship.mockResolvedValue(pendingFriendship)
 
     await expect(friendshipService.sendFriendRequest('u1', 'u2')).rejects.toThrow(
-      'Friendship already exists'
+        'Friendship already exists'
     )
   })
 
@@ -75,7 +75,7 @@ describe('friendshipService.sendFriendRequest', () => {
     mockUserRepo.getUserById.mockResolvedValueOnce(user1).mockResolvedValueOnce(null)
 
     await expect(friendshipService.sendFriendRequest('u1', 'ghost')).rejects.toThrow(
-      'Friend not found'
+        'Friend not found'
     )
   })
 })
@@ -90,14 +90,16 @@ describe('friendshipService.updateFriendshipStatus', () => {
       status: FriendStatus.ACCEPTED
     })
 
-    const result = await friendshipService.updateFriendshipStatus('u1', 'u2', FriendStatus.ACCEPTED)
+    // pendingFriendship has friendId: 'u2', so the recipient is u2.
+    // Only the recipient may accept — pass u2 as the acting userId.
+    const result = await friendshipService.updateFriendshipStatus('u2', 'u1', FriendStatus.ACCEPTED)
     expect(result.status).toBe(FriendStatus.ACCEPTED)
   })
 
   it('throws when friendship not found', async () => {
     mockRepo.getFriendship.mockResolvedValue(null)
     await expect(
-      friendshipService.updateFriendshipStatus('u1', 'ghost', FriendStatus.ACCEPTED)
+        friendshipService.updateFriendshipStatus('u1', 'ghost', FriendStatus.ACCEPTED)
     ).rejects.toThrow('Friendship not found')
   })
 })
@@ -116,13 +118,13 @@ describe('friendshipService.deleteFriendship', () => {
   it('throws when friendship does not exist', async () => {
     mockRepo.getFriendship.mockResolvedValue(null)
     await expect(friendshipService.deleteFriendship('u1', 'ghost')).rejects.toThrow(
-      'Friendship not found'
+        'Friendship not found'
     )
   })
 
   it('throws when userId is missing', async () => {
     await expect(friendshipService.deleteFriendship('', 'u2')).rejects.toThrow(
-      'userId and friendId are required'
+        'userId and friendId are required'
     )
   })
 })

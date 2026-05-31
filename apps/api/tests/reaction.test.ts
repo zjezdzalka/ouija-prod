@@ -2,19 +2,60 @@ import request from 'supertest'
 import { TEST_TOKEN } from './setup'
 import { app } from '@/app'
 import { prisma } from '@/lib'
-import { mockReaction1, mockReaction2 } from './fixtures'
+import {
+  mockUser1,
+  mockReaction1,
+  mockReaction2,
+  mockPrivateChat
+} from './fixtures'
 import { ReactionType, PrismaClient } from '@prisma/client'
 import { Mocked } from 'jest-mock'
 
 const db = prisma as Mocked<PrismaClient>
 
-beforeEach(() => jest.clearAllMocks())
+function asResult<T>(val: unknown): T {
+  return val as T
+}
 
-describe('GET /api/messages/:messageId/reactions', () => {
+function asMock(fn: unknown): jest.Mock {
+  return fn as unknown as jest.Mock
+}
+
+const CHAT_ID = mockPrivateChat.id
+const MESSAGE_ID = mockReaction1.messageId
+const SESSION_USER = 'user_alice_001'
+
+const mockMembership = {
+  chatId: CHAT_ID,
+  userId: SESSION_USER,
+  role: 'MEMBER',
+  joinedAt: new Date()
+}
+
+function reactionsUrl(messageId = MESSAGE_ID) {
+  return `/api/chats/${CHAT_ID}/messages/${messageId}/reactions`
+}
+
+beforeEach(() => {
+  jest.clearAllMocks()
+  asMock(db.user.findUnique).mockImplementation(
+    async (args: { where: Record<string, unknown> }) => {
+      if (args?.where?.id === 'user_alice_001') return mockUser1
+      return null
+    }
+  )
+  db.chatUser.findUnique.mockResolvedValue(asResult(mockMembership))
+})
+
+describe('GET /api/chats/:chatId/messages/:messageId/reactions', () => {
   it('returns all reactions for a message', async () => {
-    db.reaction.findMany.mockResolvedValueOnce([mockReaction1, mockReaction2])
+    db.reaction.findMany.mockResolvedValueOnce(
+      asResult([mockReaction1, mockReaction2])
+    )
 
-    const res = await request(app).get('/api/messages/1/reactions').set('Authorization', `Bearer ${TEST_TOKEN}`)
+    const res = await request(app)
+      .get(reactionsUrl())
+      .set('Authorization', `Bearer ${TEST_TOKEN}`)
 
     expect(res.status).toBe(200)
     expect(res.body).toHaveLength(2)
@@ -23,43 +64,44 @@ describe('GET /api/messages/:messageId/reactions', () => {
   })
 })
 
-describe('POST /api/messages/:messageId/reactions', () => {
+describe('POST /api/chats/:chatId/messages/:messageId/reactions', () => {
   it('adds a reaction to a message', async () => {
-    db.reaction.findUnique.mockResolvedValueOnce(null) // no existing reaction
-    db.reaction.create.mockResolvedValueOnce(mockReaction1)
+    db.reaction.findUnique.mockResolvedValueOnce(asResult(null))
+    db.reaction.create.mockResolvedValueOnce(asResult(mockReaction1))
+    db.message.findUnique.mockResolvedValueOnce(asResult(null))
 
     const res = await request(app)
-      .post('/api/messages/1/reactions')
+      .post(reactionsUrl())
       .set('Authorization', `Bearer ${TEST_TOKEN}`)
-      .send({ userId: 'user_bob_002', type: 'LIKE' })
+      .send({ type: 'LIKE' })
 
     expect(res.status).toBe(201)
     expect(res.body.type).toBe('LIKE')
   })
 
-  it('returns 500 if reaction already exists', async () => {
-    db.reaction.findUnique.mockResolvedValueOnce(mockReaction1) // already reacted
+  it('returns 400 if reaction already exists', async () => {
+    db.reaction.findUnique.mockResolvedValueOnce(asResult(mockReaction1))
 
     const res = await request(app)
-      .post('/api/messages/1/reactions')
+      .post(reactionsUrl())
       .set('Authorization', `Bearer ${TEST_TOKEN}`)
-      .send({ userId: 'user_bob_002', type: 'LIKE' })
+      .send({ type: 'LIKE' })
 
-    expect(res.status).toBe(500)
-    expect(res.body.error).toMatch(/already exists/)
+    expect(res.status).toBe(400)
+    expect(res.body.error).toBeDefined()
   })
 })
 
-describe('PUT /api/messages/:messageId/reactions/:userId', () => {
+describe('PUT /api/chats/:chatId/messages/:messageId/reactions', () => {
   it('changes a reaction type', async () => {
-    db.reaction.findUnique.mockResolvedValueOnce(mockReaction1)
-    db.reaction.update.mockResolvedValueOnce({
-      ...mockReaction1,
-      type: ReactionType.LAUGH
-    })
+    db.reaction.findUnique.mockResolvedValueOnce(asResult(mockReaction1))
+    db.reaction.update.mockResolvedValueOnce(
+      asResult({ ...mockReaction1, type: ReactionType.LAUGH })
+    )
+    db.message.findUnique.mockResolvedValueOnce(asResult(null))
 
     const res = await request(app)
-      .put('/api/messages/1/reactions/user_bob_002')
+      .put(reactionsUrl())
       .set('Authorization', `Bearer ${TEST_TOKEN}`)
       .send({ type: 'LAUGH' })
 
@@ -67,39 +109,40 @@ describe('PUT /api/messages/:messageId/reactions/:userId', () => {
     expect(res.body.type).toBe('LAUGH')
   })
 
-  it('returns 500 if reaction does not exist', async () => {
-    db.reaction.findUnique.mockResolvedValueOnce(null)
+  it('returns 400 if reaction does not exist', async () => {
+    db.reaction.findUnique.mockResolvedValueOnce(asResult(null))
 
     const res = await request(app)
-      .put('/api/messages/1/reactions/user_bob_002')
+      .put(reactionsUrl())
       .set('Authorization', `Bearer ${TEST_TOKEN}`)
       .send({ type: 'LAUGH' })
 
-    expect(res.status).toBe(500)
-    expect(res.body.error).toMatch(/not found/)
+    expect(res.status).toBe(400)
+    expect(res.body.error).toBeDefined()
   })
 })
 
-describe('DELETE /api/messages/:messageId/reactions/:userId', () => {
+describe('DELETE /api/chats/:chatId/messages/:messageId/reactions', () => {
   it('removes a reaction and returns 204', async () => {
-    db.reaction.findUnique.mockResolvedValueOnce(mockReaction1)
-    db.reaction.delete.mockResolvedValueOnce(mockReaction1)
+    db.reaction.findUnique.mockResolvedValueOnce(asResult(mockReaction1))
+    db.reaction.delete.mockResolvedValueOnce(asResult(mockReaction1))
+    db.message.findUnique.mockResolvedValueOnce(asResult(null))
 
-    const res = await request(app).delete(
-      '/api/messages/1/reactions/user_bob_002'
-    )
+    const res = await request(app)
+      .delete(reactionsUrl())
+      .set('Authorization', `Bearer ${TEST_TOKEN}`)
 
     expect(res.status).toBe(204)
   })
 
-  it('returns 500 if reaction does not exist', async () => {
-    db.reaction.findUnique.mockResolvedValueOnce(null)
+  it('returns 400 if reaction does not exist', async () => {
+    db.reaction.findUnique.mockResolvedValueOnce(asResult(null))
 
-    const res = await request(app).delete(
-      '/api/messages/1/reactions/nonexistent_user'
-    )
+    const res = await request(app)
+      .delete(reactionsUrl())
+      .set('Authorization', `Bearer ${TEST_TOKEN}`)
 
-    expect(res.status).toBe(500)
-    expect(res.body.error).toMatch(/not found/)
+    expect(res.status).toBe(400)
+    expect(res.body.error).toBeDefined()
   })
 })

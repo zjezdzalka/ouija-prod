@@ -1,130 +1,201 @@
 # ouija 👁️
 
-> Open-source, self-hosted internet messenger built with Next.js, Express, PostgreSQL and Redis.
+> Samohostedowany komunikator internetowy zbudowany w Next.js, Express, PostgreSQL i Redis.
 
-[![Docker Image CI](https://github.com/internuntiae/ouija/actions/workflows/test-docker-compose.yml/badge.svg)](https://github.com/internuntiae/ouija/actions)
+[![Docker Image CI](https://github.com/zjezdzalka/ouija/actions/workflows/test-docker-compose.yml/badge.svg)](https://github.com/zjezdzalka/ouija/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
-## What is ouija?
+## Czym jest ouija?
 
-ouija is a self-hostable web chat application. The entire stack runs via Docker — you own your data, your infrastructure, your messages. It supports private and group chats, emoji reactions, media attachments, friend management, and optionally end-to-end encryption (E2EE) via a Diffie-Hellman key exchange algorithm.
+ouija to aplikacja webowa do komunikacji w czasie rzeczywistym, którą możesz postawić samodzielnie. Cały stos działa przez Docker — dane, infrastruktura i wiadomości pozostają pod Twoją kontrolą. Aplikacja obsługuje czaty prywatne i grupowe, reakcje emoji, załączniki mediów oraz zarządzanie znajomymi.
 
-## Tech stack
+## Demo — działająca instancja
 
-| Layer     | Technology                        |
-|-----------|-----------------------------------|
-| Frontend  | Next.js 15 (App Router), SCSS     |
-| Backend   | Express 5, TypeScript             |
-| Database  | PostgreSQL 15 + Prisma ORM        |
-| Cache     | Redis 7                           |
-| Container | Docker + Docker Compose           |
+Aplikacja jest hostowana 24/7 na niezależnym serwerze i dostępna publicznie — nie trzeba jej lokalnie budować ani instalować, żeby jej używać:
+
+**https://ouija.rytui.dev/**
+
+Lokalny setup (Docker) jest potrzebny tylko jeśli chcesz uruchomić własną instancję lub rozwijać kod.
+
+## Stack technologiczny
+
+| Warstwa     | Technologia                           |
+|-------------|---------------------------------------|
+| Frontend    | Next.js 15 (App Router), SCSS, TypeScript |
+| Backend     | Express 5, TypeScript, Node.js        |
+| Baza danych | PostgreSQL 15 + Prisma ORM            |
+| Cache       | Redis 7                               |
+| Kontener    | Docker + Docker Compose               |
 
 ---
 
-## Quick start
+## Szybki start (Docker — zalecane)
 
-### Prerequisites
+### Wymagania
 
 - [Docker](https://docs.docker.com/get-docker/) + [Docker Compose](https://docs.docker.com/compose/)
 - Git
 
-### 1. Clone the repository
+### 1. Sklonuj repozytorium
 
 ```bash
-git clone https://github.com/internuntiae/ouija.git
+git clone https://github.com/zjezdzalka/ouija.git
 cd ouija
 ```
 
-### 2. Create the environment file
+### 2. Utwórz plik środowiskowy
 
 ```bash
 cp .envs/.env.example .env
 ```
 
-Edit `.env` and at minimum change the passwords:
+Otwórz `.env` i zmień co najmniej hasła:
 
 ```env
 POSTGRES_USER=ouija
-POSTGRES_PASSWORD=your_secure_password_here
+POSTGRES_PASSWORD=twoje_bezpieczne_haslo
 POSTGRES_DB=ouija
-DATABASE_URL=postgresql://ouija:your_secure_password_here@postgres:5432/ouija
+DATABASE_URL=postgresql://ouija:twoje_bezpieczne_haslo@postgres:5432/ouija
 
-REDIS_PASSWORD=your_redis_password_here
+REDIS_PASSWORD=twoje_haslo_redis
 REDIS_HOST=redis
 REDIS_PORT=6379
 
 APP_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:3001
+CDN_BASE_URL=http://localhost:3001/api/media
 ```
 
-> **SMTP is optional.** Leave `AUTH_REQUIRE_EMAIL_VERIFICATION=false` and `AUTH_ENABLE_PASSWORD_RESET=false` if you don't have an SMTP server. See [Email / SMTP setup](docs/smtp.md) to enable these features.
+> **SMTP jest opcjonalne.** Zostaw `AUTH_REQUIRE_EMAIL_VERIFICATION=false` i `AUTH_ENABLE_PASSWORD_RESET=false`, jeśli nie masz serwera SMTP. Szczegóły w [docs/smtp.md](docs/smtp.md).
 
-### 3. Start the app
+### 3. Uruchom aplikację
 
 ```bash
 docker compose up
 ```
 
-The first run will build the images — this takes a few minutes.
+Pierwsze uruchomienie buduje obrazy — zajmuje to kilka minut. Migracje bazy danych wykonywane są automatycznie przy starcie kontenera API.
 
-Once started:
+Po uruchomieniu:
 
-| Service     | URL                              |
-|-------------|----------------------------------|
-| Web app     | http://localhost:3000            |
-| REST API    | http://localhost:3001/api        |
-| Swagger UI  | http://localhost:3001/api-docs   |
+| Usługa      | Adres URL                          |
+|-------------|------------------------------------|
+| Aplikacja   | http://localhost:3000              |
+| REST API    | http://localhost:3001/api          |
+| Swagger UI  | http://localhost:3001/api-docs     |
 
 ---
 
-## Documentation
+## Uruchamianie w środowisku JetBrains (WebStorm / IntelliJ)
 
-| Document | Description |
+Projekt zawiera gotowe konfiguracje uruchomień w katalogu `.run/`. Po otwarciu projektu w JetBrains IDE pojawią się automatycznie na liście konfiguracji w górnym pasku.
+
+| Konfiguracja              | Opis                                                                 |
+|---------------------------|----------------------------------------------------------------------|
+| `docker-compose-db`       | Uruchamia tylko PostgreSQL i Redis (Docker). Punkt startowy dla dev. |
+| `docker-compose-apps`     | Buduje i uruchamia API + Web przez Docker (`--build`).               |
+| `dev:api`                 | Uruchamia backend lokalnie z hot-reload (nodemon).                   |
+| `dev:web`                 | Uruchamia frontend lokalnie z hot-reload (Next.js dev).              |
+| `test:api`                | Uruchamia testy jednostkowe backendu (Jest).                         |
+| `test:web`                | Uruchamia testy jednostkowe frontendu (Vitest).                      |
+| `prisma:studio`           | Resetuje i uruchamia lokalną bazę dev, a następnie otwiera Prisma Studio. |
+
+**Typowy workflow deweloperski w JetBrains:**
+1. Uruchom `docker-compose-db` — startuje PostgreSQL i Redis w tle.
+2. Uruchom `dev:api` — backend na `http://localhost:3001`.
+3. Uruchom `dev:web` — frontend na `http://localhost:3000`.
+
+> **Uwaga:** Konfiguracje `dev:api` i `dev:web` wymagają lokalnej instalacji Node.js 20+ oraz wykonanego `npm install`. Konfiguracje `docker-compose-*` wymagają działającego Docker Desktop.
+
+---
+
+## Uruchamianie lokalnie (bez Docker)
+
+Szczegółowy przewodnik w [docs/development.md](docs/development.md). Skrót:
+
+```bash
+# 1. Uruchom tylko infrastrukturę
+docker compose up postgres redis -d
+
+# 2. Zainstaluj zależności
+npm install
+
+# 3. Utwórz apps/api/.env (patrz docs/development.md)
+
+# 4. Zastosuj migracje
+npm run prisma:dev
+
+# 5. Backend (terminal 1)
+npm run dev:api
+
+# 6. Frontend (terminal 2)
+npm run dev:web
+```
+
+---
+
+## Dokumentacja
+
+| Dokument | Opis |
 |---|---|
-| [Architecture](docs/architecture.md) | How the app is structured — layers, data flow, Redis caching |
-| [Database schema](docs/database.md) | All models, relations, and enums |
-| [Environment variables](docs/environment.md) | Full reference for all `.env` variables |
-| [SMTP / Email setup](docs/smtp.md) | Gmail, Outlook, and generic SMTP configuration |
-| [Development guide](docs/development.md) | Running locally without Docker, tests, seed data |
-| [Contributing](docs/contributing.md) | How to contribute to the project |
+| [Architektura](docs/architecture.md) | Struktura aplikacji — warstwy, przepływ danych, cache Redis |
+| [Schemat bazy danych](docs/database.md) | Modele, relacje i enumy |
+| [Zmienne środowiskowe](docs/environment.md) | Pełny opis wszystkich zmiennych `.env` |
+| [Konfiguracja SMTP](docs/smtp.md) | Gmail, Outlook i generyczny SMTP |
+| [Przewodnik deweloperski](docs/development.md) | Uruchamianie lokalne, testy, dane seed |
+| [Contributing](docs/contributing.md) | Jak wnosić wkład do projektu |
 
-The API is also fully documented via Swagger UI at `/api-docs` when the server is running.
+API jest w pełni udokumentowane przez Swagger UI pod `/api-docs` kiedy serwer działa.
 
 ---
 
-## Project structure
+## Struktura projektu
 
 ```
 ouija/
 ├── apps/
-│   ├── api/            # Express backend
-│   │   ├── prisma/     # Database schema & migrations
+│   ├── api/                 # Backend Express
+│   │   ├── prisma/          # Schemat bazy danych i migracje
+│   │   │   └── dev/         # Skrypty generowania danych testowych
 │   │   ├── src/
 │   │   │   ├── controllers/
 │   │   │   ├── services/
 │   │   │   ├── repositories/
 │   │   │   ├── routers/
-│   │   │   └── lib/    # Redis, email, tokens
-│   │   └── tests/
-│   └── web/            # Next.js frontend
-│       └── src/app/    # App Router pages
-├── docs/               # This documentation
-├── encryption_algo/    # Diffie-Hellman E2EE prototype
-├── docker-compose.yaml
-└── .envs/              # SMTP config templates
+│   │   │   ├── middleware/
+│   │   │   └── lib/         # Redis, email, tokeny
+│   │   └── tests/           # Testy jednostkowe i integracyjne
+│   └── web/                 # Frontend Next.js
+│       └── src/app/         # Strony App Router
+├── docs/                    # Dokumentacja
+├── .run/                    # Konfiguracje uruchomień JetBrains
+├── .envs/                   # Szablony konfiguracji środowiskowej
+│   ├── .env.example
+│   ├── .env.smtp.gmail
+│   ├── .env.smtp.outlook
+│   └── .env.smtp.generic
+├── .github/workflows/       # CI/CD GitHub Actions
+└── docker-compose.yaml
 ```
 
 ---
 
-## License
+## Testy
 
-ouija is licensed under the [MIT License](LICENSE).
+```bash
+# Testy API (Jest + Supertest)
+npm run test:api
 
-## Contributing
+# Testy frontendu (Vitest)
+npm run test:web
+```
 
-Pull requests are welcome! See [Contributing](docs/contributing.md) for details.
+Dostępna jest również kolekcja Postman pod `apps/api/tests/ouija.postman_collection.json`.
 
-## Bug reports
+---
 
-Please use the [GitHub Issues](https://github.com/internuntiae/ouija/issues) tracker with the provided issue template.
+## Licencja
+
+ouija jest dostępna na licencji [MIT](LICENSE).

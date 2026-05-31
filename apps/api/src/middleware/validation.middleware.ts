@@ -63,7 +63,7 @@ export function validateQuery(schema: ZodSchema) {
 export const createChatSchema = z.object({
   name: z.string().min(1).max(64).optional(),
   type: z.nativeEnum(ChatType),
-  userIds: z.array(z.string().cuid()).min(2)
+  userIds: z.array(z.string().min(1)).min(2)
 })
 
 export const updateChatSchema = z.object({
@@ -74,7 +74,7 @@ export const updateChatSchema = z.object({
 }).refine((d) => Object.keys(d).length > 0, { message: 'No update data provided' })
 
 export const addChatMemberSchema = z.object({
-  userId: z.string().cuid(),
+  userId: z.string().min(1),
   role: z.nativeEnum(ChatRole).optional()
 })
 
@@ -97,15 +97,15 @@ const reactionSchema = z.object({
 })
 
 export const createMessageSchema = z
-  .object({
-    content: z.string().max(4000).nullable().optional(),
-    attachments: z.array(attachmentSchema).max(10).optional().default([]),
-    reactions: z.array(reactionSchema).optional().default([])
-  })
-  .refine(
-    (d) => d.content != null || (d.attachments && d.attachments.length > 0),
-    { message: 'Content and attachments cannot both be empty' }
-  )
+    .object({
+      content: z.string().max(4000).nullable().optional(),
+      attachments: z.array(attachmentSchema).max(10).optional().default([]),
+      reactions: z.array(reactionSchema).optional().default([])
+    })
+    .refine(
+        (d) => d.content != null || (d.attachments && d.attachments.length > 0),
+        { message: 'Content and attachments cannot both be empty' }
+    )
 
 export const updateMessageSchema = z.object({
   content: z.string().max(4000).nullable().optional(),
@@ -115,17 +115,17 @@ export const updateMessageSchema = z.object({
 
 export const getMessagesQuerySchema = z.object({
   limit: z
-    .string()
-    .optional()
-    .transform((v) => (v ? parseInt(v, 10) : 50))
-    .refine((v) => v > 0 && v <= 200, { message: 'limit must be 1–200' }),
+      .string()
+      .optional()
+      .transform((v) => (v ? parseInt(v, 10) : 50))
+      .refine((v) => v > 0 && v <= 200, { message: 'limit must be 1–200' }),
   lastId: z.string().optional().default('')
 })
 
 // ── Friendship schemas ────────────────────────────────────────────────────────
 
 export const sendFriendRequestSchema = z.object({
-  friendId: z.string().cuid()
+  friendId: z.string().min(1)
 })
 
 export const updateFriendshipSchema = z.object({
@@ -138,25 +138,25 @@ export const createUserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   nickname: z
-    .string()
-    .min(3)
-    .max(32)
-    .regex(/^[a-zA-Z0-9_-]+$/, 'nickname may only contain letters, numbers, underscores and hyphens')
-})
-
-export const updateUserSchema = z
-  .object({
-    nickname: z
       .string()
       .min(3)
       .max(32)
-      .regex(/^[a-zA-Z0-9_-]+$/)
-      .optional(),
-    password: z.string().min(8).optional(),
-    status: z.enum(['ONLINE', 'OFFLINE', 'AWAY', 'BUSY', 'INVISIBLE']).optional(),
-    avatarUrl: z.string().url().nullable().optional()
-  })
-  .refine((d) => Object.keys(d).length > 0, { message: 'No update data provided' })
+      .regex(/^[a-zA-Z0-9_-]+$/, 'nickname may only contain letters, numbers, underscores and hyphens')
+})
+
+export const updateUserSchema = z
+    .object({
+      nickname: z
+          .string()
+          .min(3)
+          .max(32)
+          .regex(/^[a-zA-Z0-9_-]+$/)
+          .optional(),
+      password: z.string().min(8).optional(),
+      status: z.enum(['ONLINE', 'OFFLINE', 'AWAY', 'BUSY', 'INVISIBLE']).optional(),
+      avatarUrl: z.string().url().nullable().optional()
+    })
+    .refine((d) => Object.keys(d).length > 0, { message: 'No update data provided' })
 
 // ── Media schemas ─────────────────────────────────────────────────────────────
 // requesterId is intentionally absent — the controller derives it from the session,

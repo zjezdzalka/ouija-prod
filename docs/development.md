@@ -1,26 +1,30 @@
-# Development guide
+# Przewodnik deweloperski
 
-## Prerequisites
+## Wymagania wstępne
 
 - Node.js 20+
-- Docker + Docker Compose (for the database services)
+- Docker + Docker Compose (dla usług bazy danych)
 - npm
 
 ---
 
-## Running locally (without full Docker)
+## Uruchamianie lokalnie (bez pełnego Docker)
 
-For active development you'll usually want hot-reload on the API and web app while keeping the database services in Docker.
+Przy aktywnym developmencie zazwyczaj chcesz mieć hot-reload na API i aplikacji webowej, trzymając usługi bazodanowe w Docker.
 
-### 1. Start only the infrastructure
+### 1. Uruchom tylko infrastrukturę
+
+**Przez terminal:**
 
 ```bash
 docker compose up postgres redis -d
 ```
 
-### 2. Set up environment variables
+**Przez JetBrains:** uruchom konfigurację `docker-compose-db` z listy Run Configurations.
 
-Create `apps/api/.env` for the API:
+### 2. Skonfiguruj zmienne środowiskowe
+
+Utwórz `apps/api/.env` dla backendu:
 
 ```env
 DATABASE_URL=postgresql://ouija:changeme@localhost:5432/ouija
@@ -31,146 +35,176 @@ AUTH_REQUIRE_EMAIL_VERIFICATION=false
 AUTH_ENABLE_PASSWORD_RESET=false
 ```
 
-The root `.env` is only used by Docker Compose — local dev reads from `apps/api/.env` directly.
+> Plik `.env` w katalogu głównym jest używany tylko przez Docker Compose. Lokalny dev czyta z `apps/api/.env` bezpośrednio. Zwróć uwagę na różnicę w hostach: `postgres`/`redis` (Docker) vs `localhost` (dev lokalny).
 
-### 3. Install dependencies
+### 3. Zainstaluj zależności
 
 ```bash
 npm install
 ```
 
-### 4. Run database migrations
+### 4. Wykonaj migracje bazy danych
 
 ```bash
-npm --workspace=apps/api run deploy
+npm run prisma:dev
 ```
 
-Or generate the Prisma client:
+Lub wygeneruj tylko klienta Prisma (bez migracji):
 
 ```bash
-npm --workspace=apps/api run generate
+npm run prisma:generate
 ```
 
-### 5. Start the backend
+### 5. Uruchom backend
+
+**Przez terminal:**
 
 ```bash
 npm run dev:api
 ```
 
-The API starts at `http://localhost:3001` with nodemon watching for changes.
+**Przez JetBrains:** uruchom konfigurację `dev:api`.
 
-### 6. Start the frontend
+API startuje na `http://localhost:3001` z nodemon obserwującym zmiany.
 
-In a second terminal:
+### 6. Uruchom frontend
+
+**Przez terminal (drugi terminal):**
 
 ```bash
 npm run dev:web
 ```
 
-The web app starts at `http://localhost:3000`.
+**Przez JetBrains:** uruchom konfigurację `dev:web`.
+
+Aplikacja webowa startuje na `http://localhost:3000`.
 
 ---
 
-## Seed data (mock users and chats)
+## Konfiguracje JetBrains (.run/)
 
-To populate the database with generated test data:
+Katalog `.run/` zawiera gotowe konfiguracje uruchomień dla WebStorm / IntelliJ IDEA. Są one wykrywane automatycznie przy otwarciu projektu.
+
+| Konfiguracja          | Typ           | Opis |
+|-----------------------|---------------|------|
+| `docker-compose-db`   | Docker Compose | Uruchamia `postgres` i `redis` w tle |
+| `docker-compose-apps` | Docker Compose | Buduje (`--build`) i uruchamia `api` + `web` |
+| `dev:api`             | npm            | `npm run dev:api` — backend z hot-reload |
+| `dev:web`             | npm            | `npm run dev:web` — frontend z hot-reload |
+| `test:api`            | npm            | `npm run test:api` — testy backendu |
+| `test:web`            | npm            | `npm run test:web` — testy frontendu |
+| `prisma:studio`       | npm            | Sekwencja: reset → migrate dev → generate → studio |
+
+Konfiguracja `prisma:studio` wykonuje przed uruchomieniem trzy kroki wstępne: `prisma:reset`, `prisma:dev`, `prisma:generate`. Dzięki temu Prisma Studio zawsze otwiera się na aktualnym schemacie.
+
+---
+
+## Dane seed (mock użytkownicy i czaty)
+
+Aby zasilić bazę danych wygenerowanymi danymi testowymi:
 
 ```bash
-# Generate the Prisma client first
+# Wygeneruj klienta Prisma
 npx prisma generate --schema=apps/api/prisma/schema.prisma
 
-# Seed the database
+# Zastosuj seed
 npx prisma db seed --schema=apps/api/prisma/schema.prisma
 ```
 
-To generate a **different amount** of mock data (default is whatever the script produces):
+Aby wygenerować **inną ilość** danych (domyślna ilość jest zakodowana w skrypcie):
 
 ```bash
-python ./apps/api/prisma/dev/data_gen.py <amount>
+python ./apps/api/prisma/dev/data_gen.py <ilość>
 ```
 
-This regenerates `insert.sql` with the requested number of users/chats/messages, then the seed command applies it.
+Skrypt regeneruje `insert.sql` z żądaną liczbą użytkowników/czatów/wiadomości, a następnie polecenie seed aplikuje go.
 
 ---
 
-## Running tests
+## Uruchamianie testów
 
 ```bash
-# All API tests
+# Wszystkie testy API
 npm run test:api
 
-# Watch mode
+# Tryb watch
 npm run test:api:watch
+
+# Testy frontendu
+npm run test:web
 ```
 
-Tests use Supertest against the real Express app with a test database. The setup lives in `apps/api/tests/setup.ts` and fixtures in `apps/api/tests/fixtures.ts`.
+Testy backendu używają Supertest względem prawdziwej aplikacji Express z testową bazą danych. Setup w `apps/api/tests/setup.ts`, fixtures w `apps/api/tests/fixtures.ts`.
 
-Test suites:
+Zestawy testów:
 
-| File | Coverage |
+| Plik | Pokrycie |
 |---|---|
-| `chat.test.ts` | Chat CRUD, membership |
-| `friendship.test.ts` | Friend requests, accept/block |
-| `message.test.ts` | Sending, editing, deleting messages |
-| `reaction.test.ts` | Adding/removing reactions |
-| `user.test.ts` | Profile reads and updates |
-| `health.test.ts` | `/api/health` endpoint |
-| `hash.test.ts` | SHA-256 hashing utility |
+| `auth.test.ts` / `auth.service.test.ts` | Rejestracja, logowanie, weryfikacja email |
+| `chat.test.ts` / `chat.service.test.ts` | CRUD czatów, zarządzanie członkami |
+| `friendship.test.ts` / `friendship.service.test.ts` | Zaproszenia do znajomych, akceptacja/blokowanie |
+| `message.test.ts` / `message.service.test.ts` | Wysyłanie, edycja, usuwanie wiadomości |
+| `reaction.test.ts` | Dodawanie/usuwanie reakcji |
+| `user.test.ts` / `user.service.test.ts` | Odczyt i aktualizacja profilu |
+| `health.test.ts` | Endpoint `/api/health` |
+| `hash.test.ts` | Utility hashowania SHA-256 |
 
 ---
 
-## Postman collection
+## Kolekcja Postman
 
-A complete Postman collection is available at:
+Kompletna kolekcja Postman dostępna pod:
 
 ```
 apps/api/tests/ouija.postman_collection.json
 ```
 
-Import it into Postman or Bruno to explore and test all API endpoints interactively.
+Zaimportuj ją do Postman lub Bruno, aby eksplorować i testować wszystkie endpointy API.
 
 ---
 
 ## Prisma Studio
 
-Visual database browser:
+Wizualna przeglądarka bazy danych:
 
 ```bash
-npm --workspace=apps/api run studio
+npm run prisma:studio
 ```
 
-Opens at `http://localhost:5555`.
+**Przez JetBrains:** uruchom konfigurację `prisma:studio` (automatycznie wykonuje wcześniej reset i migracje).
+
+Otwiera się pod `http://localhost:5555`.
 
 ---
 
-## Code quality
+## Jakość kodu
 
 ```bash
-# Format all TypeScript and SCSS
+# Formatuj wszystkie pliki TypeScript i SCSS
 npm run format
 
-# Check formatting without writing
+# Sprawdź formatowanie bez zapisu
 npm run format:check
 
-# Lint
+# Linting
 npm run lint
 
-# Lint with auto-fix
+# Linting z auto-naprawą
 npm run lint:fix
 ```
 
-Husky pre-commit hooks run ESLint + Prettier automatically. Pre-push hooks run lint.
+Husky pre-commit hooks uruchamiają ESLint + Prettier automatycznie. Hooki pre-push uruchamiają lint.
 
 ---
 
-## Building for production
+## Budowanie na produkcję
 
 ```bash
 npm run build:api
 npm run build:web
 ```
 
-Or just use Docker Compose, which handles the build step automatically:
+Lub użyj Docker Compose, który obsługuje krok budowania automatycznie:
 
 ```bash
 docker compose up --build
@@ -178,14 +212,17 @@ docker compose up --build
 
 ---
 
-## Project scripts reference
+## Skróty skryptów
 
-| Command | Description |
+| Komenda | Opis |
 |---|---|
-| `npm run dev:api` | Start API in dev/watch mode |
-| `npm run dev:web` | Start web app in dev mode |
-| `npm run build:api` | Build API TypeScript |
-| `npm run build:web` | Build Next.js app |
-| `npm run test:api` | Run API test suite |
-| `npm run format` | Format all source files |
-| `npm run lint` | Lint all source files |
+| `npm run dev:api` | Uruchom API w trybie dev/watch |
+| `npm run dev:web` | Uruchom aplikację webową w trybie dev |
+| `npm run build:api` | Zbuduj TypeScript API |
+| `npm run build:web` | Zbuduj aplikację Next.js |
+| `npm run test:api` | Uruchom testy API |
+| `npm run test:web` | Uruchom testy frontendu |
+| `npm run format` | Formatuj wszystkie pliki źródłowe |
+| `npm run lint` | Sprawdź wszystkie pliki źródłowe |
+| `npm run prisma:dev` | Wykonaj migracje bazy danych |
+| `npm run prisma:studio` | Otwórz Prisma Studio |

@@ -1,54 +1,57 @@
-import { sha256 } from '@utils/hash'
+import { hashPassword, verifyPassword } from '@utils/hash'
 
-describe('Checks multiple SHA-256 hashes', () => {
+describe('Password hashing', () => {
   describe('Int to string', () => {
-    it('', () => {
-      expect(sha256((123).toString())).toBe(
-        'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'
-      )
+    it('hashes and verifies "123"', async () => {
+      const hash = await hashPassword((123).toString())
+      expect(await verifyPassword((123).toString(), hash)).toBe(true)
     })
-    it('', () => {
-      expect(sha256((12).toString())).toBe(
-        '6b51d431df5d7f141cbececcf79edf3dd861c3b4069f0b11661a3eefacbba918'
-      )
+    it('hashes and verifies "12"', async () => {
+      const hash = await hashPassword((12).toString())
+      expect(await verifyPassword((12).toString(), hash)).toBe(true)
     })
-    it('', () => {
-      expect(sha256((1).toString())).toBe(
-        '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b'
-      )
+    it('hashes and verifies "1"', async () => {
+      const hash = await hashPassword((1).toString())
+      expect(await verifyPassword((1).toString(), hash)).toBe(true)
     })
-    it('', () => {
-      expect(sha256((67).toString())).toBe(
-        '49d180ecf56132819571bf39d9b7b342522a2ac6d23c1418d3338251bfe469c8'
-      )
+    it('hashes and verifies "67"', async () => {
+      const hash = await hashPassword((67).toString())
+      expect(await verifyPassword((67).toString(), hash)).toBe(true)
     })
   })
 
   describe('String', () => {
-    it('', () => {
-      expect(sha256('meow')).toBe(
-        '404cdd7bc109c432f8cc2443b45bcfe95980f5107215c645236e577929ac3e52'
-      )
+    it('hashes and verifies "meow"', async () => {
+      const hash = await hashPassword('meow')
+      expect(await verifyPassword('meow', hash)).toBe(true)
     })
-    it('', () => {
-      expect(sha256('123')).toBe(
-        'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'
-      )
+    it('hashes and verifies "123"', async () => {
+      const hash = await hashPassword('123')
+      expect(await verifyPassword('123', hash)).toBe(true)
     })
-    it('', () => {
-      expect(sha256('whyamidoingthis')).toBe(
-        '404b877ab00056649b4505eb8d2fefadf83884ec229ed1edcbecd3dd34cae0e5'
-      )
+    it('hashes and verifies "whyamidoingthis"', async () => {
+      const hash = await hashPassword('whyamidoingthis')
+      expect(await verifyPassword('whyamidoingthis', hash)).toBe(true)
     })
-    it('', () => {
-      expect(sha256('super_secret_password')).toBe(
-        'ac36e8d26bd00b068bf0c3558eac748402d14f469f908eb7ff92b0ead9700dda'
-      )
+    it('hashes and verifies "super_secret_password"', async () => {
+      const hash = await hashPassword('super_secret_password')
+      expect(await verifyPassword('super_secret_password', hash)).toBe(true)
     })
-    it('', () => {
-      expect(sha256('whataboutpisquaredfactorial')).toBe(
-        '8c04e7820b88cbe87accfece496726a7a0b5fccbd3da9f478790b2c3ecc2b035'
-      )
+    it('hashes and verifies "whataboutpisquaredfactorial"', async () => {
+      const hash = await hashPassword('whataboutpisquaredfactorial')
+      expect(await verifyPassword('whataboutpisquaredfactorial', hash)).toBe(true)
+    })
+  })
+
+  describe('Wrong password', () => {
+    it('rejects an incorrect password', async () => {
+      const hash = await hashPassword('correct')
+      expect(await verifyPassword('wrong', hash)).toBe(false)
+    })
+    it('produces a different hash each time (random salt)', async () => {
+      const hash1 = await hashPassword('same')
+      const hash2 = await hashPassword('same')
+      expect(hash1).not.toBe(hash2)
     })
   })
 })

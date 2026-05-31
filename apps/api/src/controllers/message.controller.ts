@@ -1,42 +1,62 @@
+import { logger } from '@utils/logger'
 import { Request, Response } from 'express'
+import { safeErrorMessage, errorStatus } from '@utils/errors'
 import * as msgService from '@services/message.service'
 import { sendToUsers } from '@/lib/ws'
 import { getChatMemberIds } from '@/lib/chat-members'
+import { AuthRequest } from '@middleware/auth.middleware'
+import { ReactionType } from '@prisma/client'
 
 export const getAllMessages = async (req: Request, res: Response) => {
   try {
     const { chatId } = req.params
-    const limit = parseInt((req.query.limit as string) ?? '50')
-    const lastId = (req.query.lastId as string) ?? ''
+    // req.query has already been coerced by validateQuery(getMessagesQuerySchema)
+    const { limit, lastId } = req.query as unknown as {
+      limit: number
+      lastId: string
+    }
+
     const messages = await msgService.getAllMessages(chatId, limit, lastId)
     res.status(200).json(messages)
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message })
+    const msg = safeErrorMessage(error)
+    logger.error('request error', { err: error })
+    res.status(errorStatus(msg)).json({ error: msg })
   }
 }
 
 export const createMessage = async (req: Request, res: Response) => {
   try {
     const { chatId } = req.params
-    const { userId, content, attachments = [], reactions = [] } = req.body
+    const userId = (req as AuthRequest).userId
+    const { content, attachments = [], reactions = [] } = req.body
+    // Stamp every reaction with the authenticated user — ignore any userId the
+    // client may have included (stripped by the Zod schema).
+    const stampedReactions = (reactions as { type: ReactionType }[]).map(
+      (r) => ({
+        ...r,
+        userId
+      })
+    )
+
     const message = await msgService.createMessage(
       chatId,
       userId,
       content,
       attachments,
-      reactions
+      stampedReactions
     )
     res.status(201).json(message)
 
-    // Notify all chat members — spread message fields directly so the
-    // frontend can cast payload straight to Message without unwrapping.
     const memberIds = await getChatMemberIds(chatId)
     sendToUsers(memberIds, {
       type: 'message:created',
       payload: { ...message } as Record<string, unknown>
     })
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message })
+    const msg = safeErrorMessage(error)
+    logger.error('request error', { err: error })
+    res.status(errorStatus(msg)).json({ error: msg })
   }
 }
 
@@ -59,14 +79,15 @@ export const updateMessage = async (req: Request, res: Response) => {
       payload: { chatId, messageId, message }
     })
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message })
+    const msg = safeErrorMessage(error)
+    logger.error('request error', { err: error })
+    res.status(errorStatus(msg)).json({ error: msg })
   }
 }
 
 export const deleteMessage = async (req: Request, res: Response) => {
   try {
     const { chatId, messageId } = req.params
-    // Fetch members before deletion (record is gone after)
     const memberIds = await getChatMemberIds(chatId)
     await msgService.deleteMessage(messageId, chatId)
     res.status(204).send()
@@ -76,6 +97,8 @@ export const deleteMessage = async (req: Request, res: Response) => {
       payload: { chatId, messageId }
     })
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message })
+    const msg = safeErrorMessage(error)
+    logger.error('request error', { err: error })
+    res.status(errorStatus(msg)).json({ error: msg })
   }
 }

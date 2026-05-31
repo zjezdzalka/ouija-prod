@@ -1,6 +1,7 @@
 import * as userRepo from '@repositories/user.repository'
 import { emailService, tokenService, features } from '@/lib'
-import { sha256 } from '@utils/hash'
+import { invalidateAllUserSessions } from '@/lib/tokens'
+import { hashPassword } from '@utils/hash'
 import { stripPassword } from '@services/session.service'
 
 /**
@@ -16,9 +17,7 @@ export const register = async (data: {
   nickname: string
 }) => {
   data.nickname = data.nickname.toLowerCase()
-
-  if (!data.email || !data.password || !data.nickname)
-    throw new Error('data is incomplete')
+  data.email = data.email.toLowerCase().trim()
 
   if ((await userRepo.getUserByEmail(data.email)) !== null)
     throw new Error('email already exists')
@@ -26,7 +25,7 @@ export const register = async (data: {
   if ((await userRepo.getUserByNickname(data.nickname)) !== null)
     throw new Error('nickname already exists')
 
-  const hashed = sha256(data.password)
+  const hashed = await hashPassword(data.password)
 
   if (features.REQUIRE_EMAIL_VERIFICATION) {
     // Create unverified account and send verification email
@@ -75,8 +74,6 @@ export const forgotPassword = async (email: string) => {
   if (!features.ENABLE_PASSWORD_RESET)
     throw new Error('password reset is not enabled')
 
-  if (!email) throw new Error('email is required')
-
   const user = await userRepo.getUserByEmail(email)
   if (!user) return // silently no-op
 
@@ -92,15 +89,14 @@ export const resetPassword = async (token: string, newPassword: string) => {
   if (!features.ENABLE_PASSWORD_RESET)
     throw new Error('password reset is not enabled')
 
-  if (!token || !newPassword)
-    throw new Error('token and newPassword are required')
-
   const userId = await tokenService.consumePasswordResetToken(token)
   if (!userId) throw new Error('invalid or expired token')
 
   const user = await userRepo.getUserById(userId)
   if (!user) throw new Error('user not found')
 
-  const hashed = sha256(newPassword)
-  return userRepo.updateUser(userId, { password: hashed })
+  const hashed = await hashPassword(newPassword)
+  await userRepo.updateUser(userId, { password: hashed })
+  // Invalidate all existing sessions — a password reset means the account may have been compromised
+  await invalidateAllUserSessions(userId)
 }

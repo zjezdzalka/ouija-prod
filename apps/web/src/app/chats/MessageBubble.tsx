@@ -565,7 +565,7 @@ export default function MessageBubble({
                         setTxtContent(saved)
                         setEditedContent(saved)
                         setIsEditing(false)
-                      } catch (e) {
+                      } catch {
                         setSaveError('Nie udało się zapisać pliku.')
                       } finally {
                         setIsSaving(false)

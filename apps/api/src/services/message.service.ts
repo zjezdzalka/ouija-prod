@@ -13,7 +13,7 @@ export const getAllMessages = async (
   if (!lastId || !isInRedis) {
     return msgPostgreRepo.getAllMessages(chatId, limit, lastId)
   }
-  return msgRedisRepo.getAllMessages(chatId)
+  return msgRedisRepo.getAllMessages(chatId, limit)
 }
 
 export const createMessage = async (

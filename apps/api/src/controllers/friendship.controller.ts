@@ -1,4 +1,6 @@
+import { logger } from '@utils/logger'
 import { Request, Response } from 'express'
+import { safeErrorMessage, errorStatus } from '@utils/errors'
 import * as friendshipService from '@services/friendship.service'
 import { FriendStatus } from '@prisma/client'
 import { sendToUser } from '@/lib/ws'
@@ -19,7 +21,9 @@ export const getFriendships = async (req: Request, res: Response) => {
     const friendships = await friendshipService.getFriendships(userId)
     res.status(200).json(friendships)
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message })
+    const msg = safeErrorMessage(error)
+    logger.error('request error', { err: error })
+    res.status(errorStatus(msg)).json({ error: msg })
   }
 }
 
@@ -39,7 +43,9 @@ export const sendFriendRequest = async (req: Request, res: Response) => {
       payload: { friendship }
     })
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message })
+    const msg = safeErrorMessage(error)
+    logger.error('request error', { err: error })
+    res.status(errorStatus(msg)).json({ error: msg })
   }
 }
 
@@ -64,7 +70,9 @@ export const updateFriendshipStatus = async (req: Request, res: Response) => {
       payload: { friendship }
     })
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message })
+    const msg = safeErrorMessage(error)
+    logger.error('request error', { err: error })
+    res.status(errorStatus(msg)).json({ error: msg })
   }
 }
 
@@ -84,6 +92,8 @@ export const deleteFriendship = async (req: Request, res: Response) => {
       payload: { userId, friendId }
     })
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message })
+    const msg = safeErrorMessage(error)
+    logger.error('request error', { err: error })
+    res.status(errorStatus(msg)).json({ error: msg })
   }
 }

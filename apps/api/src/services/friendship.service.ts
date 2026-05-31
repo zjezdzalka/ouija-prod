@@ -53,6 +53,15 @@ export const updateFriendshipStatus = async (
   if (!status) throw new Error('status is required')
   const existing = await friendshipRepo.getFriendship(userId, friendId)
   if (!existing) throw new Error('Friendship not found')
+
+  // Only the *recipient* (friendId on the original record) may ACCEPT or REJECT.
+  // Either party may set BLOCKED.
+  if (status === FriendStatus.ACCEPTED || status === FriendStatus.PENDING) {
+    if (existing.friendId !== userId) {
+      throw new Error('only the recipient can accept or decline a friend request')
+    }
+  }
+
   return friendshipRepo.updateFriendshipStatus(userId, friendId, status)
 }
 

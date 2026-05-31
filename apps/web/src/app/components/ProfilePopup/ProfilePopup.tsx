@@ -7,13 +7,14 @@ import { apiFetch } from '@utils/auth'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
-type UserStatus = 'ONLINE' | 'OFFLINE' | 'AWAY' | 'BUSY'
+type UserStatus = 'ONLINE' | 'OFFLINE' | 'AWAY' | 'BUSY' | 'INVISIBLE'
 
 const STATUS_COLOR: Record<UserStatus, string> = {
   ONLINE: '#2ecc71',
   AWAY: '#f39c12',
   BUSY: '#e74c3c',
-  OFFLINE: '#7f8c8d'
+  OFFLINE: '#7f8c8d',
+  INVISIBLE: '#7f8c8d'
 }
 
 interface ProfileUser {

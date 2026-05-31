@@ -11,7 +11,14 @@ export const getChatById = async (chatId: string) => {
 export const getChatsByUserId = async (userId: string) => {
   return prisma.chat.findMany({
     where: { users: { some: { userId } } },
-    include: { users: { include: { user: true } } }
+    include: {
+      users: { include: { user: true } },
+      messages: {
+        orderBy: { sentAt: 'desc' },
+        take: 1,
+        include: { attachments: true, reactions: true }
+      }
+    }
   })
 }
 
@@ -39,7 +46,7 @@ export const createChat = async (
 
 export const updateChat = async (
   chatId: string,
-  data: Partial<{ name: string; type: ChatType }>
+  data: Partial<{ name: string }>
 ) => {
   return prisma.chat.update({
     where: { id: chatId },

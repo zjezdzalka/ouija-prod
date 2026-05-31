@@ -128,9 +128,14 @@ export const deleteMediaFile = async (id: string, requesterId: string) => {
   if (file.ownerId !== requesterId)
     throw new Error('forbidden: you do not own this file')
 
-  // Delete from disk
+  // Delete from disk (async — do not block the event loop)
   const filePath = path.join(UPLOAD_DIR, file.storedName)
-  if (fs.existsSync(filePath)) fs.unlinkSync(filePath)
+  try {
+    await fs.promises.unlink(filePath)
+  } catch (err: unknown) {
+    // ENOENT means the file was already gone — that's fine
+    if ((err as NodeJS.ErrnoException).code !== 'ENOENT') throw err
+  }
 
   // Remove DB record
   return mediaRepo.deleteMediaFile(id)

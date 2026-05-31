@@ -181,6 +181,7 @@ export const translations = {
     'status.AWAY': 'Zaraz wracam',
     'status.BUSY': 'Nie przeszkadzać',
     'status.OFFLINE': 'Offline',
+    'status.INVISIBLE': 'Niewidoczny',
 
     // ── Profil ───────────────────────────────────────────────────────────────
     'profile.settings': 'Ustawienia strony',
@@ -426,6 +427,7 @@ export const translations = {
     'status.AWAY': 'Away',
     'status.BUSY': 'Do not disturb',
     'status.OFFLINE': 'Offline',
+    'status.INVISIBLE': 'Invisible',
 
     // ── Profile ──────────────────────────────────────────────────────────────
     'profile.settings': 'App settings',

@@ -80,12 +80,23 @@ export const updateMessage = async (
     where: { id: messageId, chatId },
     data: {
       content,
-      attachments: attachments.length
-        ? { createMany: { data: attachments } }
-        : undefined,
+      // Delete all existing attachments then insert the new set so that the
+      // client's PUT body is treated as the authoritative replacement, not an
+      // additive append.  Without the deleteMany the attachment list grows
+      // unboundedly on every edit.
+      attachments: {
+        deleteMany: {},
+        ...(attachments.length ? { createMany: { data: attachments } } : {})
+      },
       reactions: reactions.length
         ? { createMany: { data: reactions } }
         : undefined
+    },
+    include: {
+      attachments: true,
+      reactions: {
+        include: { user: { select: { nickname: true, avatarUrl: true } } }
+      }
     }
   })
   await redis.updateMessage(chatId, messageId, message)

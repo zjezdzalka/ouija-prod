@@ -3,7 +3,7 @@
 import { FormEvent, RefObject, useEffect, useRef, useState } from 'react'
 import styles from './Chats.module.scss'
 import MessageBubble from './MessageBubble'
-import { Chat, Message, ReactionType, STATUS_COLOR, avatarSrc } from './types'
+import { Chat, Message, ReactionType, STATUS_COLOR, avatarSrc, API_URL } from './types'
 import { useTranslation } from '@/i18n/translations'
 import { apiFetch } from '@utils/auth'
 
@@ -145,7 +145,6 @@ export default function ChatWindow({
   const addMemberTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const upgradeSearchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
   const GROUP_MAX_MEMBERS = 10
 
   // ── Ctrl+V paste images from clipboard ──

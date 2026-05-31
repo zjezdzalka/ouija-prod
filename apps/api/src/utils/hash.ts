@@ -1,5 +1,11 @@
-import { createHash } from 'crypto'
+import bcrypt from 'bcrypt'
 
-export const sha256 = (data: string) => {
-  return createHash('sha256').update(data).digest('hex')
+const SALT_ROUNDS = 12
+
+export const hashPassword = (password: string): Promise<string> => {
+  return bcrypt.hash(password, SALT_ROUNDS)
+}
+
+export const verifyPassword = (password: string, hash: string): Promise<boolean> => {
+  return bcrypt.compare(password, hash)
 }

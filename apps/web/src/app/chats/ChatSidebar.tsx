@@ -55,7 +55,6 @@ export default function ChatSidebar({
   onStatusChange,
   searchQuery,
   setSearchQuery,
-  searchOpen,
   setSearchOpen,
   searchLoading,
   filteredChats,
@@ -73,7 +72,6 @@ export default function ChatSidebar({
 }: Props) {
   const { t, lang } = useTranslation()
   const searchInputRef = useRef<HTMLInputElement>(null)
-  const searchDropdownRef = useRef<HTMLDivElement>(null)
 
   // ── Czat grupowy ──
   const [groupModalOpen, setGroupModalOpen] = useState(false)
@@ -90,7 +88,6 @@ export default function ChatSidebar({
   // ── Add Friend Modal ──
   const [addFriendModalOpen, setAddFriendModalOpen] = useState(false)
   const [addFriendSearch, setAddFriendSearch] = useState('')
-  const addFriendSearchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   function openAddFriendModal() {
     setAddFriendModalOpen(true)

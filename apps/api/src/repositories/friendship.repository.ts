@@ -2,8 +2,16 @@ import { prisma } from '@/lib'
 import { FriendStatus } from '@prisma/client'
 
 export const getFriendship = async (userId: string, friendId: string) => {
-  return prisma.friendship.findUnique({
-    where: { userId_friendId: { userId, friendId } }
+  // Friendship records are stored with the requester as userId and recipient as friendId.
+  // Look up both orderings so that either party can find the record regardless of who
+  // originally sent the request.
+  return prisma.friendship.findFirst({
+    where: {
+      OR: [
+        { userId, friendId },
+        { userId: friendId, friendId: userId }
+      ]
+    }
   })
 }
 
@@ -41,15 +49,20 @@ export const updateFriendshipStatus = async (
   friendId: string,
   status: FriendStatus
 ) => {
+  // Determine the canonical ordering (the one the record was created with).
+  const existing = await getFriendship(userId, friendId)
+  if (!existing) throw new Error('Friendship not found')
   return prisma.friendship.update({
-    where: { userId_friendId: { userId, friendId } },
+    where: { userId_friendId: { userId: existing.userId, friendId: existing.friendId } },
     data: { status },
     include: { user: true, friend: true }
   })
 }
 
 export const deleteFriendship = async (userId: string, friendId: string) => {
+  const existing = await getFriendship(userId, friendId)
+  if (!existing) throw new Error('Friendship not found')
   return prisma.friendship.delete({
-    where: { userId_friendId: { userId, friendId } }
+    where: { userId_friendId: { userId: existing.userId, friendId: existing.friendId } }
   })
 }

@@ -13,8 +13,12 @@ export const getUserByNickname = async (nickname: string) => {
   return prisma.user.findUnique({ where: { nickname } })
 }
 
-export const getUsers = async () => {
-  return prisma.user.findMany()
+export const getUsers = async (limit = 50, cursor?: string) => {
+  return prisma.user.findMany({
+    take: limit,
+    ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
+    orderBy: { id: 'asc' }
+  })
 }
 
 export const searchUsers = async (query: string) => {
@@ -41,7 +45,17 @@ export const createUser = async (data: {
   nickname: string
   emailVerified?: boolean
 }) => {
-  return prisma.user.create({ data })
+  try {
+    return await prisma.user.create({ data })
+  } catch (err: unknown) {
+    // Prisma unique constraint violation code
+    if ((err as { code?: string }).code === 'P2002') {
+      const field = (err as { meta?: { target?: string[] } }).meta?.target?.[0]
+      if (field === 'email') throw new Error('email already exists')
+      if (field === 'nickname') throw new Error('nickname already exists')
+    }
+    throw err
+  }
 }
 
 export const updateUser = async (

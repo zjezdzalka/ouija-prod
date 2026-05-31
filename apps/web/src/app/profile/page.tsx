@@ -20,7 +20,8 @@ const STATUS_COLOR: Record<string, string> = {
   ONLINE: '#2ecc71',
   AWAY: '#f39c12',
   BUSY: '#e74c3c',
-  OFFLINE: '#7f8c8d'
+  OFFLINE: '#7f8c8d',
+  INVISIBLE: '#7f8c8d'
 }
 
 function avatarSrc(url?: string | null) {
@@ -234,7 +235,7 @@ export default function Profile() {
     if (!userId) return
     try {
       const res = await apiFetch(
-        `${API_URL}/api/users/${inviterId}/friends/${userId}`,
+        `${API_URL}/api/users/${userId}/friends/${inviterId}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },

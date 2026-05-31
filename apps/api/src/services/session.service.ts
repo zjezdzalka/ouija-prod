@@ -1,6 +1,6 @@
 import * as userRepo from '@repositories/user.repository'
 import { tokenService, features } from '@/lib'
-import { sha256 } from '@utils/hash'
+import { verifyPassword } from '@utils/hash'
 import { rehydrateUser } from '@services/media.service'
 
 /** Strip password hash before sending user data to clients. */
@@ -19,7 +19,7 @@ export const login = async (nickname: string, password: string) => {
   const user = await userRepo.getUserByNickname(nickname.toLowerCase())
   if (!user) throw new Error('invalid credentials')
 
-  if (sha256(password) !== user.password) throw new Error('invalid credentials')
+  if (!(await verifyPassword(password, user.password))) throw new Error('invalid credentials')
 
   if (features.REQUIRE_EMAIL_VERIFICATION && !user.emailVerified) {
     throw new Error('email not verified')

@@ -1318,18 +1318,6 @@ export const swaggerSpec = {
         parameters: [
           { in: 'path', name: 'id', required: true, schema: { type: 'string' } }
         ],
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                required: ['requesterId'],
-                properties: { requesterId: { type: 'string' } }
-              }
-            }
-          }
-        },
         responses: {
           200: { description: 'File deleted' },
           500: {

@@ -21,10 +21,35 @@ import * as msgService from '@services/message.service'
 import * as pgRepo from '@repositories/message.repository'
 import * as redisRepo from '@repositories/message.repository.redis'
 
-const mockPg = pgRepo as jest.Mocked<typeof pgRepo>
-const mockRedis = redisRepo as jest.Mocked<typeof redisRepo>
+// Cast via unknown so mockResolvedValue accepts plain fixtures without
+// requiring a fully-typed Prisma shape on every call site.
+const mockPg = pgRepo as unknown as jest.MockedObject<typeof pgRepo>
+const mockRedis = redisRepo as unknown as jest.MockedObject<typeof redisRepo>
 
-const baseMessage = {
+// pg repo returns messages with the full Prisma include shape (attachments +
+// reactions with user); use a minimal fixture that satisfies the service logic.
+const pgMessage = {
+  id: 'msg1',
+  chatId: 'chat1',
+  senderId: 'u1',
+  content: 'Hello',
+  sentAt: new Date(),
+  editedAt: null,
+  attachments: [],
+  reactions: []
+}
+
+// redis repo's findMessage returns the raw serialised JSON string (or null),
+// and getAllMessages returns deserialized Message objects (plain fields only).
+const redisMessageStr = JSON.stringify({
+  id: 'msg1',
+  chatId: 'chat1',
+  senderId: 'u1',
+  content: 'Hello',
+  sentAt: new Date().toISOString(),
+  editedAt: null
+})
+const redisMessageObj = {
   id: 'msg1',
   chatId: 'chat1',
   senderId: 'u1',
@@ -41,15 +66,16 @@ beforeEach(() => jest.clearAllMocks())
 
 describe('msgService.getAllMessages', () => {
   it('queries postgres when no lastId is given', async () => {
-    mockPg.getAllMessages.mockResolvedValue([baseMessage])
+    mockPg.getAllMessages.mockResolvedValue([pgMessage])
     const msgs = await msgService.getAllMessages('chat1', 50, '')
     expect(mockPg.getAllMessages).toHaveBeenCalledWith('chat1', 50, '')
     expect(msgs).toHaveLength(1)
   })
 
   it('falls back to postgres when lastId not found in redis', async () => {
+    // findMessage returns string | null — null means not cached
     mockRedis.findMessage.mockResolvedValue(null)
-    mockPg.getAllMessages.mockResolvedValue([baseMessage])
+    mockPg.getAllMessages.mockResolvedValue([pgMessage])
 
     const msgs = await msgService.getAllMessages('chat1', 50, 'msg_unknown')
     expect(mockPg.getAllMessages).toHaveBeenCalled()
@@ -57,8 +83,9 @@ describe('msgService.getAllMessages', () => {
   })
 
   it('queries redis when lastId found there', async () => {
-    mockRedis.findMessage.mockResolvedValue(baseMessage)
-    mockRedis.getAllMessages.mockResolvedValue([baseMessage])
+    // findMessage returns the serialised string when the message is cached
+    mockRedis.findMessage.mockResolvedValue(redisMessageStr)
+    mockRedis.getAllMessages.mockResolvedValue([redisMessageObj])
 
     const msgs = await msgService.getAllMessages('chat1', 50, 'msg1')
     expect(mockRedis.getAllMessages).toHaveBeenCalledWith('chat1', 50)
@@ -71,9 +98,15 @@ describe('msgService.getAllMessages', () => {
 
 describe('msgService.createMessage', () => {
   it('creates a message with content', async () => {
-    mockPg.createMessage.mockResolvedValue(baseMessage)
+    mockPg.createMessage.mockResolvedValue(pgMessage)
     const msg = await msgService.createMessage('chat1', 'u1', 'Hello', [], [])
-    expect(mockPg.createMessage).toHaveBeenCalledWith('chat1', 'u1', 'Hello', [], [])
+    expect(mockPg.createMessage).toHaveBeenCalledWith(
+      'chat1',
+      'u1',
+      'Hello',
+      [],
+      []
+    )
     expect(msg.content).toBe('Hello')
   })
 
@@ -84,11 +117,34 @@ describe('msgService.createMessage', () => {
   })
 
   it('allows null content when attachments are present', async () => {
-    const msgWithAttachment = { ...baseMessage, content: null, attachments: [{ id: 'a1', messageId: 'msg1', url: 'http://x.com/file.pdf', type: 'FILE' as const }] }
-    mockPg.createMessage.mockResolvedValue(msgWithAttachment)
+    mockPg.createMessage.mockResolvedValue({
+      ...pgMessage,
+      content: null,
+      attachments: [
+        {
+          id: 'a1',
+          messageId: 'msg1',
+          url: 'http://x.com/f.pdf',
+          type: 'FILE',
+          name: null
+        }
+      ]
+    })
 
     await expect(
-      msgService.createMessage('chat1', 'u1', null as unknown as string, [{ url: 'http://x.com/file.pdf', type: 'FILE' as const, name: 'file.pdf' } as never], [])
+      msgService.createMessage(
+        'chat1',
+        'u1',
+        null as unknown as string,
+        [
+          {
+            url: 'http://x.com/f.pdf',
+            type: 'FILE' as const,
+            name: 'f.pdf'
+          } as never
+        ],
+        []
+      )
     ).resolves.not.toThrow()
   })
 })
@@ -97,10 +153,16 @@ describe('msgService.createMessage', () => {
 
 describe('msgService.updateMessage', () => {
   it('updates an existing message', async () => {
-    mockPg.findMessage.mockResolvedValue(baseMessage)
-    mockPg.updateMessage.mockResolvedValue({ ...baseMessage, content: 'Updated' })
+    mockPg.findMessage.mockResolvedValue(pgMessage)
+    mockPg.updateMessage.mockResolvedValue({ ...pgMessage, content: 'Updated' })
 
-    const result = await msgService.updateMessage('msg1', 'chat1', 'Updated', [], [])
+    const result = await msgService.updateMessage(
+      'msg1',
+      'chat1',
+      'Updated',
+      [],
+      []
+    )
     expect(result.content).toBe('Updated')
   })
 
@@ -116,8 +178,9 @@ describe('msgService.updateMessage', () => {
 
 describe('msgService.deleteMessage', () => {
   it('deletes an existing message', async () => {
-    mockPg.findMessage.mockResolvedValue(baseMessage)
-    mockPg.deleteMessage.mockResolvedValue(baseMessage)
+    mockPg.findMessage.mockResolvedValue(pgMessage)
+    // deleteMessage returns void — mockResolvedValue with no argument matches Promise<void>
+    mockPg.deleteMessage.mockResolvedValue(undefined)
 
     await msgService.deleteMessage('msg1', 'chat1')
     expect(mockPg.deleteMessage).toHaveBeenCalledWith('msg1', 'chat1')

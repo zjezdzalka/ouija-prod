@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────────────────────
+# Self-heal: if this file was saved with Windows CRLF line endings, re-exec
+# a stripped copy so \r never reaches sed, nginx.conf, or any patched file.
+if file "$0" 2>/dev/null | grep -q CRLF; then
+    CLEAN="$(mktemp /tmp/setup_clean_XXXXXX.sh)"
+    sed 's/\r//' "$0" > "$CLEAN"
+    chmod +x "$CLEAN"
+    exec bash "$CLEAN" "$@"
+fi
+# ─────────────────────────────────────────────────────────────────────────────
 # Ouija — VPS setup & deploy script
 #
 # Tested on: Ubuntu 22.04 / 24.04
@@ -79,6 +88,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     val="${line#*=}"
     if [[ "$val" =~ ^\"(.*)\"$ ]]; then val="${BASH_REMATCH[1]}"
     elif [[ "$val" =~ ^\'(.*)\'$ ]]; then val="${BASH_REMATCH[1]}"; fi
+    val="${val//$'\r'/}"
     _env["$key"]="$val"
 done < .env
 
@@ -106,6 +116,11 @@ APP_DOMAIN="$(strip_scheme "${_env[APP_URL]}")"
 API_DOMAIN="$(strip_scheme "${_env[NEXT_PUBLIC_API_URL]}")"
 CDN_DOMAIN="$(strip_scheme "${_env[CDN_BASE_URL]}")"
 
+# Strip any stray carriage returns that survived (e.g. CRLF-encoded .env file)
+APP_DOMAIN="${APP_DOMAIN//$'\r'/}"
+API_DOMAIN="${API_DOMAIN//$'\r'/}"
+CDN_DOMAIN="${CDN_DOMAIN//$'\r'/}"
+
 [[ -n "$APP_DOMAIN" ]] || error "Could not derive APP_DOMAIN from APP_URL"
 [[ -n "$API_DOMAIN" ]] || error "Could not derive API_DOMAIN from NEXT_PUBLIC_API_URL"
 [[ -n "$CDN_DOMAIN" ]] || error "Could not derive CDN_DOMAIN from CDN_BASE_URL"
@@ -129,7 +144,7 @@ sed -i \
     -e "s|/live/ouija\.rytui\.dev/|/live/${APP_DOMAIN}/|g" \
     nginx/nginx.conf
 
-info "nginx.conf patched." 
+info "nginx.conf patched."
 
 # ── 5. Patch Dockerfile: copy prisma.config.ts into runner stage ─────────────
 DOCKERFILE="apps/api/Dockerfile"

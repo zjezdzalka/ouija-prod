@@ -126,7 +126,8 @@ export const updateChat = async (
   // type is intentionally not updatable — strip it defensively even if somehow
   // passed through, to prevent PRIVATE→GROUP promotion attacks.
   const { name } = data
-  return chatRepo.updateChat(chatId, { name })
+  const updated = await chatRepo.updateChat(chatId, { name })
+  return rehydrateChat(updated)
 }
 
 export const deleteChat = async (chatId: string) => {
